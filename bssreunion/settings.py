@@ -88,6 +88,14 @@ if os.environ.get("DB_ENGINE") == "postgres":
         "PORT": os.environ.get("DB_PORT", "5432"),
     }
 
+# Neon / Vercel Postgres: if a DATABASE_URL (or POSTGRES_URL) env var is
+# present, it takes priority over everything above. This is what gets set
+# automatically when you connect a Neon database to the Vercel project.
+_db_url = os.environ.get("DATABASE_URL") or os.environ.get("POSTGRES_URL")
+if _db_url:
+    import dj_database_url
+    DATABASES["default"] = dj_database_url.parse(_db_url, conn_max_age=600, ssl_require=True)
+
 # ---------------------------------------------------------------------------
 # PASSWORD VALIDATION
 # ---------------------------------------------------------------------------
