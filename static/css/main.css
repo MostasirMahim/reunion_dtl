@@ -149,6 +149,27 @@ a { color: inherit; text-decoration: none; }
 }
 .fee-banner .amount { font-family: 'Playfair Display', serif; font-size: 24px; color: var(--navy); }
 
+.form-checkbox-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: rgba(199,154,60,0.08); border: 1px solid var(--line);
+  border-radius: 10px; padding: 12px 14px; margin-bottom: 18px;
+}
+.form-checkbox-row input[type=checkbox] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--gold); }
+.form-checkbox-row label { font-size: 13.5px; font-weight: 600; color: var(--navy); margin: 0; }
+.form-checkbox-row .hint { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+.fee-tier-table { width: 100%; border-collapse: collapse; margin: 10px 0 0; font-size: 13.5px; }
+.fee-tier-table td { padding: 8px 10px; border-bottom: 1px solid var(--line); }
+.fee-tier-table td:last-child { text-align: right; font-weight: 700; color: var(--navy); white-space: nowrap; }
+
+.coupon-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px; }
+.coupon-chip {
+  background: #fff; border: 1px dashed var(--gold); border-radius: 10px;
+  padding: 12px 8px; text-align: center; font-size: 12.5px; font-weight: 600; color: var(--navy);
+}
+.coupon-chip .dot { color: var(--gold); font-size: 18px; display: block; margin-bottom: 4px; }
+@media (max-width: 640px) { .coupon-strip { grid-template-columns: repeat(2, 1fr); } }
+
 /* ---------- Messages ---------- */
 .messages { list-style: none; padding: 0; margin: 0 0 18px; }
 .messages li { padding: 12px 16px; border-radius: 10px; font-size: 14px; margin-bottom: 8px; }

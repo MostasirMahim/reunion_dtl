@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
 from .forms import RegistrationForm, AdminLoginForm, RegistrantSearchForm
-from .models import Registrant
+from .models import Registrant, calculate_total_fee
 from .sslcommerz import init_payment, validate_payment
 from .ticket_utils import generate_qr_code, generate_ticket_pdf
 from .email_utils import send_ticket_email, send_payment_receipt_email
@@ -31,7 +31,9 @@ def register(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             registrant = form.save(commit=False)
-            registrant.amount = settings.REGISTRATION_FEE
+            registrant.amount = calculate_total_fee(
+                registrant.ssc_batch, registrant.is_driver
+            )
             registrant.transaction_id = f"BSSR-{uuid.uuid4().hex[:16].upper()}"
             registrant.save()
 

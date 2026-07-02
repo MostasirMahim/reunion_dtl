@@ -25,13 +25,18 @@
       </div>
 
       <div class="form-grid-2" style="margin-top:24px;">
-        <div class="ticket-field"><div class="label">Phone</div><div class="value">{{ registrant.phone }}</div></div>
+        <div class="ticket-field"><div class="label">Phone (Primary)</div><div class="value">{{ registrant.phone }}</div></div>
+        <div class="ticket-field"><div class="label">Secondary Phone</div><div class="value">{{ registrant.secondary_phone|default:"—" }}</div></div>
+        <div class="ticket-field"><div class="label">WhatsApp</div><div class="value">{{ registrant.whatsapp_number|default:"—" }}</div></div>
         <div class="ticket-field"><div class="label">Email</div><div class="value">{{ registrant.email }}</div></div>
-        <div class="ticket-field"><div class="label">Passing Year</div><div class="value">{{ registrant.passing_year }}</div></div>
-        <div class="ticket-field"><div class="label">Department/Class</div><div class="value">{{ registrant.department_class }}</div></div>
+        <div class="ticket-field"><div class="label">Last Class Attended</div><div class="value">{{ registrant.last_class_attended }}</div></div>
+        <div class="ticket-field"><div class="label">SSC Batch</div><div class="value">{{ registrant.ssc_batch }} {% if registrant.is_current_student %}(বর্তমান ছাত্র/ছাত্রী){% endif %}</div></div>
+        <div class="ticket-field"><div class="label">SSC Passing Year</div><div class="value">{{ registrant.ssc_passing_year|default:"—" }}</div></div>
+        <div class="ticket-field"><div class="label">Fee Tier</div><div class="value">{{ registrant.fee_tier_label }}</div></div>
         <div class="ticket-field"><div class="label">Blood Group</div><div class="value">{{ registrant.blood_group|default:"—" }}</div></div>
         <div class="ticket-field"><div class="label">T-Shirt</div><div class="value">{{ registrant.get_tshirt_size_display }}</div></div>
         <div class="ticket-field"><div class="label">Address</div><div class="value">{{ registrant.present_address|default:"—" }}</div></div>
+        <div class="ticket-field"><div class="label">With Driver</div><div class="value">{% if registrant.is_driver %}হ্যাঁ (+৳500){% else %}না{% endif %}</div></div>
         <div class="ticket-field"><div class="label">Amount</div><div class="value">৳{{ registrant.amount }}</div></div>
         <div class="ticket-field"><div class="label">Transaction ID</div><div class="value">{{ registrant.transaction_id }}</div></div>
         <div class="ticket-field"><div class="label">Bank Transaction ID</div><div class="value">{{ registrant.sslcz_bank_tran_id|default:"—" }}</div></div>

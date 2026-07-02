@@ -33,7 +33,7 @@
       <table>
         <thead>
           <tr>
-            <th>Reg. ID</th><th>Name</th><th>Phone</th><th>Batch</th>
+            <th>Reg. ID</th><th>Name</th><th>Phone</th><th>Batch</th><th>Driver</th>
             <th>Status</th><th>Checked-in</th><th>Registered</th><th></th>
           </tr>
         </thead>
@@ -43,14 +43,15 @@
             <td>{{ r.registration_id }}</td>
             <td>{{ r.full_name }}</td>
             <td>{{ r.phone }}</td>
-            <td>{{ r.department_class }} ({{ r.passing_year }})</td>
+            <td>{{ r.last_class_attended }} ({{ r.ssc_batch }})</td>
+            <td>{% if r.is_driver %}🚗{% else %}—{% endif %}</td>
             <td><span class="status-pill status-{{ r.payment_status }}">{{ r.get_payment_status_display }}</span></td>
             <td>{% if r.is_checked_in %}✅{% else %}—{% endif %}</td>
             <td>{{ r.created_at|date:"d M, h:i A" }}</td>
             <td><a href="{% url 'registration:admin_registrant_detail' r.pk %}" style="color:var(--navy); font-weight:600;">View →</a></td>
           </tr>
           {% empty %}
-          <tr><td colspan="8" style="text-align:center; color:var(--muted); padding:30px;">কোনো রেজিস্ট্রেশন পাওয়া যায়নি।</td></tr>
+          <tr><td colspan="9" style="text-align:center; color:var(--muted); padding:30px;">কোনো রেজিস্ট্রেশন পাওয়া যায়নি।</td></tr>
           {% endfor %}
         </tbody>
       </table>

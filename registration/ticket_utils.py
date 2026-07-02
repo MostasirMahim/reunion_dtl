@@ -123,40 +123,75 @@ def generate_ticket_pdf(registrant):
         c.drawString(inner_x, y - 5 * mm, value)
         y -= dy
 
-    draw_field("PARTICIPANT NAME", registrant.full_name, 11 * mm, 12)
+    draw_field("PARTICIPANT NAME", registrant.full_name, 10 * mm, 12)
     c.setFillColor(GREY)
     c.setFont(*label_font)
     c.drawString(inner_x, y, "REGISTRATION ID")
     c.setFillColor(NAVY)
     c.setFont("NotoBengali", 13)
     c.drawString(inner_x, y - 5.5 * mm, registrant.registration_id)
-    y -= 11 * mm
+    y -= 10 * mm
 
-    draw_field("MOBILE NUMBER", registrant.phone, 10 * mm, 11)
-    draw_field("DEPARTMENT/CLASS & PASSING YEAR",
-               f"{registrant.department_class} (Passing Year: {registrant.passing_year})", 10 * mm, 11)
-    draw_field("T-SHIRT SIZE", registrant.get_tshirt_size_display(), 10 * mm, 11)
+    draw_field("MOBILE NUMBER", registrant.phone, 9 * mm, 11)
+    draw_field("LAST CLASS ATTENDED / SSC BATCH",
+               f"{registrant.last_class_attended} — Batch {registrant.ssc_batch}", 9 * mm, 11)
+    draw_field("T-SHIRT SIZE", registrant.get_tshirt_size_display(), 9 * mm, 11)
+
+    if registrant.is_driver:
+        c.setFillColor(GREY)
+        c.setFont(*label_font)
+        c.drawString(inner_x, y, "WITH DRIVER")
+        c.setFillColor(ORANGE)
+        c.setFont("NotoBengali", 9.5)
+        c.drawString(inner_x, y - 5 * mm, "হ্যাঁ — শুধুমাত্র দুপুরের খাবারের জন্য (+৳500)")
+        y -= 8 * mm
 
     # Bottom divider
     c.setStrokeColor(colors.HexColor("#E5E7EB"))
     c.setLineWidth(0.6)
     c.line(inner_x, y, card_x + card_w - 8 * mm, y)
-    y -= 7 * mm
+    y -= 6 * mm
 
     # Event date & venue
     c.setFillColor(colors.black)
-    c.setFont("NotoBengali", 9)
+    c.setFont("NotoBengali", 8.5)
     c.drawString(inner_x, y, "Event Date:")
-    c.setFont("NotoBengali", 9)
     c.drawString(inner_x + 18 * mm, y, settings.EVENT_DATE_TEXT)
-    y -= 5.5 * mm
-    c.setFont("NotoBengali", 9)
+    y -= 5 * mm
+    c.setFont("NotoBengali", 8.5)
     c.drawString(inner_x, y, "Venue:")
-    c.setFont("NotoBengali", 9)
     c.drawString(inner_x + 18 * mm, y, settings.EVENT_VENUE)
+    y -= 5 * mm
+    c.setFont("NotoBengali", 8.5)
+    c.drawString(inner_x, y, "Location:")
+    c.drawString(inner_x + 18 * mm, y, "Baraibunia, Nazirpur, Pirojpur")
+
+    # Coupons / entitlements strip
+    y -= 7 * mm
+    c.setFillColor(GREY)
+    c.setFont("NotoBengali", 7.5)
+    c.drawString(inner_x, y, "এই টিকেট দিয়ে যা যা পাবেন")
+    y -= 5.5 * mm
+
+    coupons = ["Sovereign Bag", "Morning Snacks", "Lunch", "Evening Snacks"]
+    chip_gap = 3 * mm
+    usable_w = card_w - 16 * mm
+    chip_w = (usable_w - chip_gap * (len(coupons) - 1)) / len(coupons)
+    chip_h = 9 * mm
+    chip_x = inner_x
+    for label in coupons:
+        c.setFillColor(LIGHT_BG)
+        c.roundRect(chip_x, y - chip_h, chip_w, chip_h, 3, stroke=0, fill=1)
+        c.setFillColor(NAVY)
+        c.setFont("NotoBengali", 7)
+        c.drawCentredString(chip_x + chip_w / 2, y - chip_h / 2 - 1.2 * mm, "•")
+        c.setFont("NotoBengali", 6.3)
+        c.drawCentredString(chip_x + chip_w / 2, y - chip_h + 2 * mm, label)
+        chip_x += chip_w + chip_gap
+    y -= chip_h
 
     # Highlight notice box
-    y -= 9 * mm
+    y -= 6 * mm
     notice_h = 9 * mm
     c.setFillColor(LIGHT_BG)
     c.rect(inner_x, y - notice_h + 4*mm, card_w - 16 * mm, notice_h, stroke=0, fill=1)

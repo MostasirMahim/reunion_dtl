@@ -158,7 +158,7 @@ SCHOOL_NAME = os.environ.get("SCHOOL_NAME", "Baraibunia Secondary School")
 EVENT_SHORT_NAME = os.environ.get("EVENT_SHORT_NAME", "BSSREUNION")
 EVENT_FULL_NAME = os.environ.get("EVENT_FULL_NAME", "BSS Reunion 2026")
 EVENT_DATE_TEXT = os.environ.get("EVENT_DATE_TEXT", "To be announced")
-EVENT_VENUE = os.environ.get("EVENT_VENUE", "Baraibunia Secondary School Campus")
+EVENT_VENUE = os.environ.get("EVENT_VENUE", "Baraibunia Secondary School Campus, Baraibunia, Nazirpur, Pirojpur")
 REGISTRATION_FEE = int(os.environ.get("REGISTRATION_FEE", 500))
 
 LOGIN_URL = "/admin-panel/login/"

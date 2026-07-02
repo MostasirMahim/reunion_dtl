@@ -13,14 +13,21 @@
     <div class="fee-banner">
       <div>
         <div style="font-size:12.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em;">Registration Fee</div>
-        <div class="amount">৳{{ REGISTRATION_FEE }}</div>
+        <div class="amount" id="feeAmount">৳---</div>
       </div>
       <div style="font-size:13px; color:var(--muted); max-width:220px; text-align:right;">
         SSLCommerz এর মাধ্যমে নিরাপদ পেমেন্ট — bKash / Nagad / Card / Bank
       </div>
     </div>
 
-    <form method="post" novalidate>
+    <table class="fee-tier-table" style="margin-bottom:24px;">
+      <tr><td>১৯৬৩ - ২০১৯ সাল পর্যন্ত পাস করা প্রতিজন</td><td>৳১,৫০০</td></tr>
+      <tr><td>২০২০ - ২০২৬ সাল পর্যন্ত পাস করা প্রতিজন</td><td>৳১,০০০</td></tr>
+      <tr><td>স্কুলের বর্তমান ছাত্র/ছাত্রী প্রতিজন</td><td>৳৩০০</td></tr>
+      <tr><td>ড্রাইভার (শুধুমাত্র দুপুরের খাবার)</td><td>+৳৫০০</td></tr>
+    </table>
+
+    <form method="post" novalidate id="regForm">
       {% csrf_token %}
       <div class="form-row">
         <label for="{{ form.full_name.id_for_label }}">পূর্ণ নাম *</label>
@@ -30,9 +37,22 @@
 
       <div class="form-grid-2">
         <div class="form-row">
-          <label for="{{ form.phone.id_for_label }}">মোবাইল নম্বর *</label>
+          <label for="{{ form.phone.id_for_label }}">মোবাইল নম্বর (Primary) *</label>
           {{ form.phone }}
           {{ form.phone.errors }}
+        </div>
+        <div class="form-row">
+          <label for="{{ form.secondary_phone.id_for_label }}">সেকেন্ডারি মোবাইল নম্বর</label>
+          {{ form.secondary_phone }}
+          {{ form.secondary_phone.errors }}
+        </div>
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-row">
+          <label for="{{ form.whatsapp_number.id_for_label }}">WhatsApp নম্বর</label>
+          {{ form.whatsapp_number }}
+          {{ form.whatsapp_number.errors }}
         </div>
         <div class="form-row">
           <label for="{{ form.email.id_for_label }}">ইমেইল *</label>
@@ -42,16 +62,26 @@
         </div>
       </div>
 
+      <div class="form-row">
+        <label for="{{ form.last_class_attended.id_for_label }}">সর্বশেষ শ্রেণি (Last Class Attended) *</label>
+        {{ form.last_class_attended }}
+        {{ form.last_class_attended.errors }}
+      </div>
+
       <div class="form-grid-2">
         <div class="form-row">
-          <label for="{{ form.passing_year.id_for_label }}">পাসিং ইয়ার (SSC) *</label>
-          {{ form.passing_year }}
-          {{ form.passing_year.errors }}
+          <label for="{{ form.ssc_batch.id_for_label }}">SSC ব্যাচ *</label>
+          {{ form.ssc_batch }}
+          {{ form.ssc_batch.errors }}
+          <div class="hint">
+            এসএসসি পাস করে থাকলে পাসের সাল দিন। এখনো পাস না করে থাকলে (বর্তমান ছাত্র/ছাত্রী)
+            কোন সালে পাস করবেন সেই সালটি দিন — এই সাল অনুযায়ীই রেজিস্ট্রেশন ফি নির্ধারণ হবে।
+          </div>
         </div>
         <div class="form-row">
-          <label for="{{ form.department_class.id_for_label }}">ডিপার্টমেন্ট / শাখা *</label>
-          {{ form.department_class }}
-          {{ form.department_class.errors }}
+          <label for="{{ form.ssc_passing_year.id_for_label }}">SSC পাসিং ইয়ার (ঐচ্ছিক)</label>
+          {{ form.ssc_passing_year }}
+          {{ form.ssc_passing_year.errors }}
         </div>
       </div>
 
@@ -74,8 +104,17 @@
         {{ form.present_address.errors }}
       </div>
 
+      <div class="form-checkbox-row">
+        {{ form.is_driver }}
+        <div>
+          <label for="{{ form.is_driver.id_for_label }}">আপনার সাথে কি ড্রাইভার আসবে?</label>
+          <div class="hint">টিক দিলে অতিরিক্ত ৳৫০০ যোগ হবে (শুধুমাত্র দুপুরের খাবারের জন্য) — টিকেটেও এটি উল্লেখ থাকবে।</div>
+          {{ form.is_driver.errors }}
+        </div>
+      </div>
+
       <button type="submit" class="btn btn-gold btn-block" style="margin-top:10px;">
-        পেমেন্ট করুন — ৳{{ REGISTRATION_FEE }} →
+        পেমেন্ট করুন — <span id="feeAmountBtn">৳---</span> →
       </button>
       <p style="text-align:center; font-size:12.5px; color:var(--muted); margin-top:14px;">
         "পেমেন্ট করুন" বাটনে ক্লিক করলে আপনি SSLCommerz পেমেন্ট পেইজে যাবেন।
@@ -83,4 +122,32 @@
     </form>
   </div>
 </div>
+
+<script>
+(function () {
+  var sscInput = document.getElementById("{{ form.ssc_batch.id_for_label }}");
+  var driverInput = document.getElementById("{{ form.is_driver.id_for_label }}");
+  var feeAmountEl = document.getElementById("feeAmount");
+  var feeAmountBtnEl = document.getElementById("feeAmountBtn");
+
+  function calculateFee() {
+    var year = parseInt(sscInput.value, 10);
+    var fee = 1500;
+    if (!isNaN(year)) {
+      if (year <= 2019) { fee = 1500; }
+      else if (year <= 2026) { fee = 1000; }
+      else { fee = 300; }
+    }
+    if (driverInput.checked) { fee += 500; }
+    feeAmountEl.textContent = "৳" + fee;
+    feeAmountBtnEl.textContent = "৳" + fee;
+  }
+
+  if (sscInput && driverInput) {
+    sscInput.addEventListener("input", calculateFee);
+    driverInput.addEventListener("change", calculateFee);
+    calculateFee();
+  }
+})();
+</script>
 {% endblock %}

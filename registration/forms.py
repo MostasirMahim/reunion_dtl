@@ -8,12 +8,16 @@ class RegistrationForm(forms.ModelForm):
         fields = [
             "full_name",
             "phone",
+            "secondary_phone",
+            "whatsapp_number",
             "email",
-            "passing_year",
-            "department_class",
+            "last_class_attended",
+            "ssc_batch",
+            "ssc_passing_year",
             "blood_group",
             "present_address",
             "tshirt_size",
+            "is_driver",
         ]
         widgets = {
             "full_name": forms.TextInput(attrs={
@@ -22,14 +26,23 @@ class RegistrationForm(forms.ModelForm):
             "phone": forms.TextInput(attrs={
                 "class": "form-input", "placeholder": "01XXXXXXXXX"
             }),
+            "secondary_phone": forms.TextInput(attrs={
+                "class": "form-input", "placeholder": "01XXXXXXXXX (ঐচ্ছিক)"
+            }),
+            "whatsapp_number": forms.TextInput(attrs={
+                "class": "form-input", "placeholder": "WhatsApp নম্বর (ঐচ্ছিক)"
+            }),
             "email": forms.EmailInput(attrs={
                 "class": "form-input", "placeholder": "you@example.com"
             }),
-            "passing_year": forms.NumberInput(attrs={
-                "class": "form-input", "placeholder": "e.g. 2005", "min": 1960, "max": 2030
+            "last_class_attended": forms.TextInput(attrs={
+                "class": "form-input", "placeholder": "e.g. Class 10 / SSC / Science-A"
             }),
-            "department_class": forms.TextInput(attrs={
-                "class": "form-input", "placeholder": "e.g. Science / Commerce / Arts"
+            "ssc_batch": forms.NumberInput(attrs={
+                "class": "form-input", "placeholder": "e.g. 2005", "min": 1963, "max": 2035
+            }),
+            "ssc_passing_year": forms.NumberInput(attrs={
+                "class": "form-input", "placeholder": "e.g. 2005 (ঐচ্ছিক)", "min": 1963, "max": 2035
             }),
             "blood_group": forms.TextInput(attrs={
                 "class": "form-input", "placeholder": "e.g. B+ (optional)"
@@ -38,6 +51,7 @@ class RegistrationForm(forms.ModelForm):
                 "class": "form-input", "placeholder": "Present address (optional)"
             }),
             "tshirt_size": forms.Select(attrs={"class": "form-select"}),
+            "is_driver": forms.CheckboxInput(attrs={"class": "form-checkbox"}),
         }
 
     def clean_phone(self):
@@ -45,6 +59,24 @@ class RegistrationForm(forms.ModelForm):
         digits = phone.replace("+", "").replace(" ", "").replace("-", "")
         if not digits.isdigit() or len(digits) < 10:
             raise forms.ValidationError("সঠিক মোবাইল নম্বর দিন।")
+        return phone
+
+    def clean_secondary_phone(self):
+        phone = (self.cleaned_data.get("secondary_phone") or "").strip()
+        if not phone:
+            return phone
+        digits = phone.replace("+", "").replace(" ", "").replace("-", "")
+        if not digits.isdigit() or len(digits) < 10:
+            raise forms.ValidationError("সঠিক মোবাইল নম্বর দিন।")
+        return phone
+
+    def clean_whatsapp_number(self):
+        phone = (self.cleaned_data.get("whatsapp_number") or "").strip()
+        if not phone:
+            return phone
+        digits = phone.replace("+", "").replace(" ", "").replace("-", "")
+        if not digits.isdigit() or len(digits) < 10:
+            raise forms.ValidationError("সঠিক WhatsApp নম্বর দিন।")
         return phone
 
 

@@ -22,8 +22,11 @@
       <div class="ticket-field"><div class="label">Name</div><div class="value">{{ registrant.full_name }}</div></div>
       <div class="ticket-field"><div class="label">Registration ID</div><div class="value">{{ registrant.registration_id }}</div></div>
       <div class="ticket-field"><div class="label">Phone</div><div class="value">{{ registrant.phone }}</div></div>
-      <div class="ticket-field"><div class="label">Department & Batch</div><div class="value">{{ registrant.department_class }} ({{ registrant.passing_year }})</div></div>
+      <div class="ticket-field"><div class="label">Last Class Attended / SSC Batch</div><div class="value">{{ registrant.last_class_attended }} — Batch {{ registrant.ssc_batch }}</div></div>
       <div class="ticket-field"><div class="label">T-Shirt</div><div class="value">{{ registrant.get_tshirt_size_display }}</div></div>
+      {% if registrant.is_driver %}
+      <div class="ticket-field"><div class="label">With Driver</div><div class="value" style="color:#D97706;">হ্যাঁ — শুধুমাত্র দুপুরের খাবার (+৳500)</div></div>
+      {% endif %}
 
       <div style="margin-top:10px;">
         {% if registrant.is_checked_in %}

@@ -27,12 +27,32 @@
       <div class="value">{{ registrant.phone }}</div>
     </div>
     <div class="ticket-field">
-      <div class="label">Department & Batch</div>
-      <div class="value">{{ registrant.department_class }} (Passing Year: {{ registrant.passing_year }})</div>
+      <div class="label">Last Class Attended / SSC Batch</div>
+      <div class="value">{{ registrant.last_class_attended }} — Batch {{ registrant.ssc_batch }}</div>
     </div>
     <div class="ticket-field">
       <div class="label">T-Shirt Size</div>
       <div class="value">{{ registrant.get_tshirt_size_display }}</div>
+    </div>
+    {% if registrant.is_driver %}
+    <div class="ticket-field">
+      <div class="label">With Driver</div>
+      <div class="value" style="color:#D97706;">হ্যাঁ — শুধুমাত্র দুপুরের খাবারের জন্য (+৳500)</div>
+    </div>
+    {% endif %}
+    <div class="ticket-field">
+      <div class="label">Location</div>
+      <div class="value">Baraibunia, Nazirpur, Pirojpur</div>
+    </div>
+
+    <div class="ticket-field">
+      <div class="label" style="margin-bottom:8px;">এই টিকেট দিয়ে যা যা পাবেন</div>
+      <div class="coupon-strip">
+        <div class="coupon-chip"><span class="dot">●</span>Sovereign Bag</div>
+        <div class="coupon-chip"><span class="dot">●</span>Morning Snacks</div>
+        <div class="coupon-chip"><span class="dot">●</span>Lunch</div>
+        <div class="coupon-chip"><span class="dot">●</span>Evening Snacks</div>
+      </div>
     </div>
 
     {% if registrant.qr_code %}

@@ -10,8 +10,8 @@
     </p>
     <div class="meta-row">
       <div class="meta-item"><span class="ic">📅</span> {{ EVENT_DATE_TEXT }}</div>
-      <div class="meta-item"><span class="ic">📍</span> {{ EVENT_VENUE }}</div>
-      <div class="meta-item"><span class="ic">৳</span> Registration Fee: ৳{{ REGISTRATION_FEE }}</div>
+      <div class="meta-item"><span class="ic">📍</span> Baraibunia, Nazirpur, Pirojpur</div>
+      <div class="meta-item"><span class="ic">৳</span> রেজিস্ট্রেশন ফি ৳৩০০ থেকে শুরু</div>
     </div>
     <div style="margin-top:36px;">
       <a class="btn btn-gold" href="{% url 'registration:register' %}">Register Now →</a>
@@ -62,6 +62,43 @@
       <div class="ic-badge" style="margin:0 auto 16px;">✓</div>
       <h3>প্রতিটি টিকেট QR কোড দ্বারা যাচাইকৃত</h3>
       <p>প্রবেশ গেটে শুধু QR কোড স্ক্যান করলেই নিশ্চিত হবে আপনার রেজিস্ট্রেশন।</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="fee">
+  <div class="wrap grid-2" style="align-items:flex-start;">
+    <div>
+      <div class="section-head" style="text-align:left; margin-bottom:18px;">
+        <div class="eyebrow">Registration Fee</div>
+        <h2 style="font-size:26px;">রেজিস্ট্রেশন ফি</h2>
+      </div>
+      <table class="fee-tier-table">
+        <tr><td>১৯৬৩ সাল থেকে ২০১৯ পর্যন্ত প্রতিজন</td><td>৳১,৫০০</td></tr>
+        <tr><td>২০২০ সাল থেকে ২০২৬ সাল পর্যন্ত প্রতিজন</td><td>৳১,০০০</td></tr>
+        <tr><td>স্কুলের বর্তমান ছাত্র/ছাত্রী প্রতিজন</td><td>৳৩০০</td></tr>
+        <tr><td>ড্রাইভার প্রতিজন (শুধুমাত্র দুপুরের খাবার)</td><td>+৳৫০০</td></tr>
+      </table>
+      <p style="color:var(--muted); font-size:12.5px; margin-top:10px;">
+        SSC ব্যাচ অনুযায়ী রেজিস্ট্রেশন ফরমেই স্বয়ংক্রিয়ভাবে সঠিক ফি নির্ধারিত হবে।
+      </p>
+    </div>
+    <div>
+      <div class="section-head" style="text-align:left; margin-bottom:18px;">
+        <div class="eyebrow">Ticket Benefits</div>
+        <h2 style="font-size:26px;">টিকেট দিয়ে যা যা পাবেন</h2>
+      </div>
+      <div class="coupon-strip">
+        <div class="coupon-chip"><span class="dot">●</span>Sovereign Bag</div>
+        <div class="coupon-chip"><span class="dot">●</span>Morning Snacks</div>
+        <div class="coupon-chip"><span class="dot">●</span>Lunch</div>
+        <div class="coupon-chip"><span class="dot">●</span>Evening Snacks</div>
+      </div>
+      <div class="card" style="margin-top:20px;">
+        <div class="ic-badge" style="margin-bottom:12px;">📍</div>
+        <h3 style="font-size:17px;">Location</h3>
+        <p style="margin-top:6px;">Baraibunia, Nazirpur, Pirojpur</p>
+      </div>
     </div>
   </div>
 </section>

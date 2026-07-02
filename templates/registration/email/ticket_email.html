@@ -11,9 +11,19 @@
     </p>
     <table style="width:100%; font-size:14px; color:#1c2230; margin-top:16px;">
       <tr><td style="padding:6px 0; color:#6b7280;">Registration ID</td><td style="text-align:right; font-weight:bold;">{{ registrant.registration_id }}</td></tr>
-      <tr><td style="padding:6px 0; color:#6b7280;">Department & Batch</td><td style="text-align:right;">{{ registrant.department_class }} ({{ registrant.passing_year }})</td></tr>
+      <tr><td style="padding:6px 0; color:#6b7280;">Last Class Attended / SSC Batch</td><td style="text-align:right;">{{ registrant.last_class_attended }} — Batch {{ registrant.ssc_batch }}</td></tr>
       <tr><td style="padding:6px 0; color:#6b7280;">T-Shirt Size</td><td style="text-align:right;">{{ registrant.get_tshirt_size_display }}</td></tr>
+      {% if registrant.is_driver %}
+      <tr><td style="padding:6px 0; color:#6b7280;">With Driver</td><td style="text-align:right; color:#D97706;">হ্যাঁ (+৳500, শুধু দুপুরের খাবার)</td></tr>
+      {% endif %}
+      <tr><td style="padding:6px 0; color:#6b7280;">Location</td><td style="text-align:right;">Baraibunia, Nazirpur, Pirojpur</td></tr>
     </table>
+    <div style="margin-top:18px; padding:14px; background:#faf6ee; border:1px dashed #c79a3c; border-radius:10px;">
+      <div style="font-size:12.5px; color:#6b7280; margin-bottom:8px;">এই টিকেট দিয়ে যা যা পাবেন</div>
+      <div style="font-size:13.5px; color:#0b2d57; font-weight:600;">
+        🎒 Sovereign Bag &nbsp;•&nbsp; 🍪 Morning Snacks &nbsp;•&nbsp; 🍛 Lunch &nbsp;•&nbsp; 🍰 Evening Snacks
+      </div>
+    </div>
     <p style="color:#6b7280; font-size:13px; margin-top:20px;">
       কোনো প্রশ্ন থাকলে এই ইমেইলের রিপ্লাই করুন। আমরা আপনার জন্য অপেক্ষায় থাকবো!
     </p>

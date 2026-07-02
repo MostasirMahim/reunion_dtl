@@ -29,19 +29,58 @@ PAYMENT_STATUS_CHOICES = [
     ("cancelled", "Cancelled"),
 ]
 
+DRIVER_FEE = 500
+
+
+def calculate_registration_fee(ssc_batch):
+    """
+    Fee tiers (as of the school's official notice):
+      1963 - 2019  -> 1500 taka
+      2020 - 2026  -> 1000 taka
+      2027 onwards -> 300 taka (current students of the school, not yet passed SSC)
+    """
+    try:
+        year = int(ssc_batch)
+    except (TypeError, ValueError):
+        return 1500
+
+    if year <= 2019:
+        return 1500
+    elif year <= 2026:
+        return 1000
+    else:
+        return 300
+
+
+def calculate_total_fee(ssc_batch, is_driver=False):
+    total = calculate_registration_fee(ssc_batch)
+    if is_driver:
+        total += DRIVER_FEE
+    return total
+
 
 class Registrant(models.Model):
     # Personal info
     full_name = models.CharField(max_length=150)
-    phone = models.CharField(max_length=20)
+    phone = models.CharField(max_length=20, help_text="Primary mobile number (mandatory)")
+    secondary_phone = models.CharField(max_length=20, blank=True, null=True)
+    whatsapp_number = models.CharField(max_length=20, blank=True, null=True)
     email = models.EmailField()
-    passing_year = models.PositiveIntegerField(help_text="SSC / Passing Year")
-    department_class = models.CharField(
-        max_length=100, help_text="e.g. Science / Commerce / Class 10-A"
+    last_class_attended = models.CharField(
+        max_length=100, help_text="e.g. Class 10 / SSC / Science-A"
+    )
+    ssc_batch = models.PositiveIntegerField(
+        help_text="SSC Batch year. If not yet passed, the year you would/will pass."
+    )
+    ssc_passing_year = models.PositiveIntegerField(
+        blank=True, null=True, help_text="Actual SSC passing year (optional)"
     )
     blood_group = models.CharField(max_length=5, blank=True, null=True)
     present_address = models.CharField(max_length=255, blank=True, null=True)
     tshirt_size = models.CharField(max_length=4, choices=TSHIRT_CHOICES)
+    is_driver = models.BooleanField(
+        default=False, help_text="Bringing own driver (+৳500, lunch only)"
+    )
 
     # Registration meta
     registration_id = models.CharField(
@@ -82,3 +121,16 @@ class Registrant(models.Model):
     @property
     def is_paid(self):
         return self.payment_status == "paid"
+
+    @property
+    def is_current_student(self):
+        return self.ssc_batch > 2026
+
+    @property
+    def fee_tier_label(self):
+        if self.is_current_student:
+            return "স্কুলের বর্তমান ছাত্র/ছাত্রী"
+        elif self.ssc_batch <= 2019:
+            return "১৯৬৩ - ২০১৯ ব্যাচ"
+        else:
+            return "২০২০ - ২০২৬ ব্যাচ"
