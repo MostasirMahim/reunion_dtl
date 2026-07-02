@@ -1,0 +1,24 @@
+<div style="font-family: Arial, sans-serif; max-width: 560px; margin: 0 auto; background:#faf6ee; padding: 30px;">
+  <div style="background:#c79a3c; color:#0b2d57; padding:22px; border-radius:12px 12px 0 0; text-align:center;">
+    <h2 style="margin:0; font-size:20px;">Payment Receipt</h2>
+  </div>
+  <div style="background:#fff; padding:26px; border-radius:0 0 12px 12px; border:1px solid #e7e1d3;">
+    <p style="color:#1c2230; font-size:14.5px;">
+      প্রিয় {{ registrant.full_name }},<br><br>
+      আপনার পেমেন্টটি SSLCommerz এর মাধ্যমে সফলভাবে সম্পন্ন হয়েছে। নিচে আপনার পেমেন্টের বিবরণ দেওয়া হলো:
+    </p>
+    <table style="width:100%; font-size:14px; color:#1c2230; margin-top:16px;">
+      <tr><td style="padding:6px 0; color:#6b7280;">Transaction ID</td><td style="text-align:right; font-weight:bold;">{{ registrant.transaction_id }}</td></tr>
+      <tr><td style="padding:6px 0; color:#6b7280;">Bank Transaction ID</td><td style="text-align:right;">{{ registrant.sslcz_bank_tran_id|default:"—" }}</td></tr>
+      <tr><td style="padding:6px 0; color:#6b7280;">Amount Paid</td><td style="text-align:right; font-weight:bold;">৳{{ registrant.amount }}</td></tr>
+      <tr><td style="padding:6px 0; color:#6b7280;">Payment Method</td><td style="text-align:right;">{{ registrant.sslcz_card_type|default:"—" }}</td></tr>
+      <tr><td style="padding:6px 0; color:#6b7280;">Paid At</td><td style="text-align:right;">{{ registrant.paid_at|date:"d M Y, h:i A" }}</td></tr>
+    </table>
+    <p style="color:#6b7280; font-size:13px; margin-top:20px;">
+      এই রশিদটি সংরক্ষণ করুন। আপনার এন্ট্রি টিকেট আলাদা ইমেইলে পাঠানো হয়েছে।
+    </p>
+  </div>
+  <p style="text-align:center; color:#9aa0ab; font-size:11.5px; margin-top:16px;">
+    {{ SCHOOL_NAME }} &middot; {{ EVENT_SHORT_NAME }}
+  </p>
+</div>

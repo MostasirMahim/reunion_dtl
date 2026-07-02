@@ -1,0 +1,86 @@
+{% extends "registration/base.html" %}
+{% block content %}
+<section class="hero" style="padding-bottom: 110px;">
+  <div class="wrap">
+    <span class="eyebrow">Step 1 of 2</span>
+    <h1 style="font-size:38px;">রেজিস্ট্রেশন ফর্ম</h1>
+    <p class="lead">নিচের তথ্যগুলো সঠিকভাবে পূরণ করুন — পেমেন্ট সফল হলে এই তথ্য অনুযায়ী আপনার টিকেট তৈরি হবে।</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="form-card">
+    <div class="fee-banner">
+      <div>
+        <div style="font-size:12.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em;">Registration Fee</div>
+        <div class="amount">৳{{ REGISTRATION_FEE }}</div>
+      </div>
+      <div style="font-size:13px; color:var(--muted); max-width:220px; text-align:right;">
+        SSLCommerz এর মাধ্যমে নিরাপদ পেমেন্ট — bKash / Nagad / Card / Bank
+      </div>
+    </div>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      <div class="form-row">
+        <label for="{{ form.full_name.id_for_label }}">পূর্ণ নাম *</label>
+        {{ form.full_name }}
+        {{ form.full_name.errors }}
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-row">
+          <label for="{{ form.phone.id_for_label }}">মোবাইল নম্বর *</label>
+          {{ form.phone }}
+          {{ form.phone.errors }}
+        </div>
+        <div class="form-row">
+          <label for="{{ form.email.id_for_label }}">ইমেইল *</label>
+          {{ form.email }}
+          {{ form.email.errors }}
+          <div class="hint">টিকেট এই ইমেইলে পাঠানো হবে</div>
+        </div>
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-row">
+          <label for="{{ form.passing_year.id_for_label }}">পাসিং ইয়ার (SSC) *</label>
+          {{ form.passing_year }}
+          {{ form.passing_year.errors }}
+        </div>
+        <div class="form-row">
+          <label for="{{ form.department_class.id_for_label }}">ডিপার্টমেন্ট / শাখা *</label>
+          {{ form.department_class }}
+          {{ form.department_class.errors }}
+        </div>
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-row">
+          <label for="{{ form.blood_group.id_for_label }}">রক্তের গ্রুপ</label>
+          {{ form.blood_group }}
+          {{ form.blood_group.errors }}
+        </div>
+        <div class="form-row">
+          <label for="{{ form.tshirt_size.id_for_label }}">টি-শার্ট সাইজ *</label>
+          {{ form.tshirt_size }}
+          {{ form.tshirt_size.errors }}
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="{{ form.present_address.id_for_label }}">বর্তমান ঠিকানা</label>
+        {{ form.present_address }}
+        {{ form.present_address.errors }}
+      </div>
+
+      <button type="submit" class="btn btn-gold btn-block" style="margin-top:10px;">
+        পেমেন্ট করুন — ৳{{ REGISTRATION_FEE }} →
+      </button>
+      <p style="text-align:center; font-size:12.5px; color:var(--muted); margin-top:14px;">
+        "পেমেন্ট করুন" বাটনে ক্লিক করলে আপনি SSLCommerz পেমেন্ট পেইজে যাবেন।
+      </p>
+    </form>
+  </div>
+</div>
+{% endblock %}

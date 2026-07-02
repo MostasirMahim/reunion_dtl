@@ -1,0 +1,64 @@
+{% extends "registration/base.html" %}
+{% block body %}
+<div class="admin-shell">
+  <header class="admin-topbar">
+    <div class="wrap">
+      <div class="brand">
+        <div class="brand-mark" style="width:34px; height:34px; font-size:14px;">{{ EVENT_SHORT_NAME|slice:":1" }}</div>
+        <div class="brand-text"><div class="event" style="font-size:16px;">Registrant Detail</div></div>
+      </div>
+      <nav>
+        <a href="{% url 'registration:admin_dashboard' %}" class="btn btn-outline" style="padding:8px 18px; font-size:13px;">← Back</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap" style="padding-top:30px; padding-bottom:60px; max-width:760px;">
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+        <div>
+          <h2 style="font-size:24px;">{{ registrant.full_name }}</h2>
+          <p style="color:var(--muted);">{{ registrant.registration_id }}</p>
+        </div>
+        <span class="status-pill status-{{ registrant.payment_status }}">{{ registrant.get_payment_status_display }}</span>
+      </div>
+
+      <div class="form-grid-2" style="margin-top:24px;">
+        <div class="ticket-field"><div class="label">Phone</div><div class="value">{{ registrant.phone }}</div></div>
+        <div class="ticket-field"><div class="label">Email</div><div class="value">{{ registrant.email }}</div></div>
+        <div class="ticket-field"><div class="label">Passing Year</div><div class="value">{{ registrant.passing_year }}</div></div>
+        <div class="ticket-field"><div class="label">Department/Class</div><div class="value">{{ registrant.department_class }}</div></div>
+        <div class="ticket-field"><div class="label">Blood Group</div><div class="value">{{ registrant.blood_group|default:"—" }}</div></div>
+        <div class="ticket-field"><div class="label">T-Shirt</div><div class="value">{{ registrant.get_tshirt_size_display }}</div></div>
+        <div class="ticket-field"><div class="label">Address</div><div class="value">{{ registrant.present_address|default:"—" }}</div></div>
+        <div class="ticket-field"><div class="label">Amount</div><div class="value">৳{{ registrant.amount }}</div></div>
+        <div class="ticket-field"><div class="label">Transaction ID</div><div class="value">{{ registrant.transaction_id }}</div></div>
+        <div class="ticket-field"><div class="label">Bank Transaction ID</div><div class="value">{{ registrant.sslcz_bank_tran_id|default:"—" }}</div></div>
+        <div class="ticket-field"><div class="label">Registered At</div><div class="value">{{ registrant.created_at|date:"d M Y, h:i A" }}</div></div>
+        <div class="ticket-field"><div class="label">Paid At</div><div class="value">{{ registrant.paid_at|date:"d M Y, h:i A"|default:"—" }}</div></div>
+      </div>
+
+      <div style="margin-top:20px; display:flex; gap:14px; align-items:center; flex-wrap:wrap;">
+        {% if registrant.is_checked_in %}
+          <span class="status-pill status-paid">✓ Checked-in at {{ registrant.checked_in_at|date:"d M, h:i A" }}</span>
+        {% else %}
+          <span class="status-pill status-pending">Not checked-in</span>
+        {% endif %}
+
+        {% if registrant.is_paid %}
+        <form method="post" action="{% url 'registration:admin_toggle_checkin' registrant.pk %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-navy" style="padding:9px 18px; font-size:13.5px;">
+            {% if registrant.is_checked_in %}Undo Check-in{% else %}Mark Checked-in{% endif %}
+          </button>
+        </form>
+        {% endif %}
+
+        {% if registrant.ticket_pdf %}
+          <a href="{{ registrant.ticket_pdf.url }}" class="btn btn-outline" style="color:var(--navy); border-color:var(--navy); padding:9px 18px; font-size:13.5px;" download>⬇ Ticket PDF</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

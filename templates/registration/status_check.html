@@ -1,0 +1,51 @@
+{% extends "registration/base.html" %}
+{% block content %}
+<section class="hero" style="padding-bottom:90px;">
+  <div class="wrap">
+    <span class="eyebrow">Check Status</span>
+    <h1 style="font-size:34px;">আপনার রেজিস্ট্রেশন স্ট্যাটাস চেক করুন</h1>
+    <p class="lead">Registration ID অথবা মোবাইল নম্বর দিয়ে সার্চ করুন।</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="form-card">
+    <form method="get">
+      <div class="form-row">
+        <label>Registration ID / Mobile Number</label>
+        <input type="text" name="q" class="form-input" value="{{ query }}"
+               placeholder="e.g. BSSR26-657050 অথবা 017XXXXXXXX" autofocus>
+      </div>
+      <button type="submit" class="btn btn-gold btn-block">খুঁজুন</button>
+    </form>
+
+    {% if searched %}
+      <div style="margin-top:26px;">
+        {% if results %}
+          {% for r in results %}
+          <div class="card" style="margin-bottom:14px; padding:18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <div style="font-weight:700; color:var(--navy);">{{ r.full_name }}</div>
+                <div style="font-size:13px; color:var(--muted);">{{ r.registration_id }} &middot; {{ r.phone }}</div>
+              </div>
+              <span class="status-pill status-{{ r.payment_status }}">{{ r.get_payment_status_display }}</span>
+            </div>
+            {% if r.is_paid %}
+              <a href="{% url 'registration:ticket_view' r.registration_id r.verify_token %}"
+                 class="btn btn-navy" style="margin-top:14px; padding:9px 18px; font-size:13.5px;">টিকেট দেখুন →</a>
+            {% else %}
+              <p style="font-size:13px; color:var(--muted); margin-top:10px;">
+                পেমেন্ট এখনো সম্পন্ন হয়নি। সফল হলে এখানে টিকেট দেখা যাবে।
+              </p>
+            {% endif %}
+          </div>
+          {% endfor %}
+        {% else %}
+          <p style="text-align:center; color:var(--muted);">কোনো রেজিস্ট্রেশন পাওয়া যায়নি।</p>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

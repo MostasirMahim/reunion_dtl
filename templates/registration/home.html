@@ -1,0 +1,68 @@
+{% extends "registration/base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="wrap">
+    <span class="eyebrow">Once a Baraibunian, always a Baraibunian</span>
+    <h1>{{ EVENT_FULL_NAME }}</h1>
+    <p class="lead">
+      বহু বছর পর আবার একসাথে — পুরোনো বন্ধু, প্রিয় শিক্ষক আর হারিয়ে যাওয়া দিনগুলোর গল্প নিয়ে
+      ফিরে আসছে {{ SCHOOL_NAME }}-এর সবচেয়ে বড় পুনর্মিলনী।
+    </p>
+    <div class="meta-row">
+      <div class="meta-item"><span class="ic">📅</span> {{ EVENT_DATE_TEXT }}</div>
+      <div class="meta-item"><span class="ic">📍</span> {{ EVENT_VENUE }}</div>
+      <div class="meta-item"><span class="ic">৳</span> Registration Fee: ৳{{ REGISTRATION_FEE }}</div>
+    </div>
+    <div style="margin-top:36px;">
+      <a class="btn btn-gold" href="{% url 'registration:register' %}">Register Now →</a>
+      <a class="btn btn-outline" href="#how" style="margin-left:12px;">How it works</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Process</div>
+      <h2>সহজ ৪টি ধাপে রেজিস্ট্রেশন</h2>
+      <p>নাম এন্ট্রি করুন, পেমেন্ট করুন, আর সরাসরি আপনার ইমেইলে পেয়ে যান এন্ট্রি টিকেট।</p>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="ic-badge">1</div>
+        <h3>তথ্য দিন</h3>
+        <p>নাম, ফোন, পাসিং ইয়ার ও প্রয়োজনীয় তথ্য দিয়ে ফর্ম পূরণ করুন।</p>
+      </div>
+      <div class="card">
+        <div class="ic-badge">2</div>
+        <h3>পেমেন্ট করুন</h3>
+        <p>SSLCommerz এর মাধ্যমে নিরাপদে bKash, Nagad, Card বা ব্যাংক দিয়ে ফি পরিশোধ করুন।</p>
+      </div>
+      <div class="card">
+        <div class="ic-badge">3</div>
+        <h3>টিকেট পান</h3>
+        <p>পেমেন্ট সফল হলেই আপনার ইমেইলে QR কোডসহ অফিসিয়াল এন্ট্রি টিকেট চলে যাবে।</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+  <div class="wrap grid-2" style="align-items:center;">
+    <div>
+      <div class="eyebrow" style="color:var(--gold); font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:12.5px;">Reunion Spirit</div>
+      <h2 style="margin-top:10px; font-size:30px;">এক ছাদের নিচে আবার সবাই</h2>
+      <p style="color:var(--muted); margin-top:14px; font-size:15px;">
+        সাবেক শিক্ষার্থীদের জন্য এক অনন্য আয়োজন — স্মৃতিচারণ, সাংস্কৃতিক অনুষ্ঠান, খাবার ও
+        সবার সাথে নতুন করে পরিচয়ের সুযোগ। নিজের রেজিস্ট্রেশন আইডি দিয়ে গেটে সহজেই প্রবেশ করুন।
+      </p>
+      <a class="btn btn-navy" href="{% url 'registration:register' %}" style="margin-top:18px;">এখনই রেজিস্ট্রেশন করুন</a>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="ic-badge" style="margin:0 auto 16px;">✓</div>
+      <h3>প্রতিটি টিকেট QR কোড দ্বারা যাচাইকৃত</h3>
+      <p>প্রবেশ গেটে শুধু QR কোড স্ক্যান করলেই নিশ্চিত হবে আপনার রেজিস্ট্রেশন।</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

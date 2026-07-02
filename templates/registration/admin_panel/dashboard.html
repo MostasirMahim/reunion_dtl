@@ -1,0 +1,67 @@
+{% extends "registration/base.html" %}
+{% block body %}
+<div class="admin-shell">
+  <header class="admin-topbar">
+    <div class="wrap">
+      <div class="brand">
+        <div class="brand-mark" style="width:34px; height:34px; font-size:14px;">{{ EVENT_SHORT_NAME|slice:":1" }}</div>
+        <div class="brand-text"><div class="event" style="font-size:16px;">Admin Dashboard</div></div>
+      </div>
+      <nav>
+        <span style="opacity:.7; font-size:13.5px; margin-right:16px;">{{ user.username }}</span>
+        <a href="{% url 'registration:admin_logout' %}" class="btn btn-outline" style="padding:8px 18px; font-size:13px;">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap" style="padding-top:28px; padding-bottom:60px;">
+    <div class="stat-grid">
+      <div class="stat-card"><div class="num">{{ total_registrants }}</div><div class="lab">Total Registrations</div></div>
+      <div class="stat-card"><div class="num">{{ total_paid }}</div><div class="lab">Paid</div></div>
+      <div class="stat-card"><div class="num">{{ total_checked_in }}</div><div class="lab">Checked-in</div></div>
+      <div class="stat-card"><div class="num">৳{{ total_revenue }}</div><div class="lab">Total Revenue</div></div>
+    </div>
+
+    <form method="get" class="search-bar">
+      {{ search_form.q }}
+      {{ search_form.status }}
+      <button type="submit" class="btn btn-navy">Search</button>
+    </form>
+
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Reg. ID</th><th>Name</th><th>Phone</th><th>Batch</th>
+            <th>Status</th><th>Checked-in</th><th>Registered</th><th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in page_obj %}
+          <tr>
+            <td>{{ r.registration_id }}</td>
+            <td>{{ r.full_name }}</td>
+            <td>{{ r.phone }}</td>
+            <td>{{ r.department_class }} ({{ r.passing_year }})</td>
+            <td><span class="status-pill status-{{ r.payment_status }}">{{ r.get_payment_status_display }}</span></td>
+            <td>{% if r.is_checked_in %}✅{% else %}—{% endif %}</td>
+            <td>{{ r.created_at|date:"d M, h:i A" }}</td>
+            <td><a href="{% url 'registration:admin_registrant_detail' r.pk %}" style="color:var(--navy); font-weight:600;">View →</a></td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="8" style="text-align:center; color:var(--muted); padding:30px;">কোনো রেজিস্ট্রেশন পাওয়া যায়নি।</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if page_obj.has_other_pages %}
+    <div style="display:flex; gap:8px; justify-content:center; margin-top:20px;">
+      {% if page_obj.has_previous %}<a class="btn btn-outline" style="color:var(--navy); border-color:var(--navy); padding:8px 16px;" href="?page={{ page_obj.previous_page_number }}">← Prev</a>{% endif %}
+      <span style="align-self:center; font-size:13px; color:var(--muted);">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+      {% if page_obj.has_next %}<a class="btn btn-outline" style="color:var(--navy); border-color:var(--navy); padding:8px 16px;" href="?page={{ page_obj.next_page_number }}">Next →</a>{% endif %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

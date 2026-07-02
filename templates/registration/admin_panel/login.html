@@ -1,0 +1,31 @@
+{% extends "registration/base.html" %}
+{% block body %}
+<div class="login-shell">
+  <div class="login-card">
+    <div style="text-align:center; margin-bottom:24px;">
+      <div class="brand-mark" style="margin:0 auto 12px; width:48px; height:48px; font-size:20px;">{{ EVENT_SHORT_NAME|slice:":1" }}</div>
+      <h2 style="font-size:20px;">Admin Panel</h2>
+      <p style="color:var(--muted); font-size:13px;">{{ EVENT_SHORT_NAME }} — {{ SCHOOL_NAME }}</p>
+    </div>
+
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}
+      </ul>
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-row">
+        <label>Username</label>
+        {{ form.username }}
+      </div>
+      <div class="form-row">
+        <label>Password</label>
+        {{ form.password }}
+      </div>
+      <button type="submit" class="btn btn-navy btn-block">Login</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

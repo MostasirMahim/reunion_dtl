@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ EVENT_SHORT_NAME }} — {{ SCHOOL_NAME }}{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <style>
+    body, .form-input, .form-select, table, .btn { font-family: 'Inter', 'Noto Sans Bengali', sans-serif; }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  {% block body %}
+  <header class="topbar">
+    <div class="wrap">
+      <a class="brand" href="{% url 'registration:home' %}">
+        <div class="brand-mark">{{ EVENT_SHORT_NAME|slice:":1" }}</div>
+        <div class="brand-text">
+          <div class="school">{{ SCHOOL_NAME }}</div>
+          <div class="event">{{ EVENT_SHORT_NAME }}</div>
+        </div>
+      </a>
+      <nav>
+        <a href="{% url 'registration:home' %}">Home</a>
+        <a href="{% url 'registration:register' %}">Register</a>
+        <a href="{% url 'registration:public_status_check' %}">Check Status</a>
+      </nav>
+    </div>
+  </header>
+
+  {% if messages %}
+  <div class="wrap" style="margin-top:20px;">
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  {% block content %}{% endblock %}
+
+  <footer>
+    <div class="wrap">
+      &copy; {% now "Y" %} {{ SCHOOL_NAME }} · {{ EVENT_SHORT_NAME }}. All rights reserved.
+    </div>
+  </footer>
+  {% endblock %}
+</body>
+</html>

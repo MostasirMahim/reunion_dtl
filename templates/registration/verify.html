@@ -1,0 +1,50 @@
+{% extends "registration/base.html" %}
+{% block content %}
+<div class="ticket-wrap">
+  {% if not valid %}
+    <div class="card" style="text-align:center; border-color:var(--danger);">
+      <div style="font-size:42px;">✕</div>
+      <h3 style="color:var(--danger); margin-top:8px;">Invalid Ticket</h3>
+      <p>এই QR কোডটি কোনো বৈধ রেজিস্ট্রেশনের সাথে মিলেনি।</p>
+    </div>
+  {% else %}
+    <div class="card" style="border-top:4px solid {% if registrant.is_paid %}var(--success){% else %}var(--danger){% endif %};">
+      <div style="text-align:center; margin-bottom:18px;">
+        {% if registrant.is_paid %}
+          <div style="font-size:42px;">✅</div>
+          <h3 style="color:var(--success);">Valid Ticket — Payment Confirmed</h3>
+        {% else %}
+          <div style="font-size:42px;">⚠️</div>
+          <h3 style="color:var(--danger);">Payment Not Completed</h3>
+        {% endif %}
+      </div>
+
+      <div class="ticket-field"><div class="label">Name</div><div class="value">{{ registrant.full_name }}</div></div>
+      <div class="ticket-field"><div class="label">Registration ID</div><div class="value">{{ registrant.registration_id }}</div></div>
+      <div class="ticket-field"><div class="label">Phone</div><div class="value">{{ registrant.phone }}</div></div>
+      <div class="ticket-field"><div class="label">Department & Batch</div><div class="value">{{ registrant.department_class }} ({{ registrant.passing_year }})</div></div>
+      <div class="ticket-field"><div class="label">T-Shirt</div><div class="value">{{ registrant.get_tshirt_size_display }}</div></div>
+
+      <div style="margin-top:10px;">
+        {% if registrant.is_checked_in %}
+          <span class="status-pill status-paid">✓ Checked-in at {{ registrant.checked_in_at|date:"d M, h:i A" }}</span>
+        {% else %}
+          <span class="status-pill status-pending">Not checked-in yet</span>
+        {% endif %}
+      </div>
+
+      {% if user.is_authenticated and registrant.is_paid and not registrant.is_checked_in %}
+        <form method="post" style="margin-top:18px;">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="checkin">
+          <button type="submit" class="btn btn-gold btn-block">Mark as Checked-in</button>
+        </form>
+      {% elif not user.is_authenticated %}
+        <p style="font-size:12.5px; color:var(--muted); margin-top:16px;">
+          Check-in করতে <a href="{% url 'registration:admin_login' %}" style="color:var(--navy); text-decoration:underline;">গেট স্টাফ লগইন</a> করুন।
+        </p>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

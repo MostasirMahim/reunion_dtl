@@ -1,0 +1,24 @@
+{% load static %}
+<div style="font-family: Arial, sans-serif; max-width: 560px; margin: 0 auto; background:#faf6ee; padding: 30px;">
+  <div style="background:#0b2d57; color:#fff; padding:22px; border-radius:12px 12px 0 0; text-align:center;">
+    <h2 style="margin:0; font-size:20px;">{{ registrant.full_name }}, আপনার রেজিস্ট্রেশন সম্পন্ন হয়েছে! 🎉</h2>
+  </div>
+  <div style="background:#fff; padding:26px; border-radius:0 0 12px 12px; border:1px solid #e7e1d3;">
+    <p style="color:#1c2230; font-size:14.5px;">
+      প্রিয় {{ registrant.full_name }},<br><br>
+      আপনার পেমেন্ট সফলভাবে সম্পন্ন হয়েছে এবং আপনার অফিসিয়াল এন্ট্রি টিকেট এই ইমেইলের সাথে PDF আকারে সংযুক্ত করা হলো।
+      অনুষ্ঠানের দিন প্রিন্ট কপি অথবা মোবাইলে এই টিকেট সাথে রাখুন।
+    </p>
+    <table style="width:100%; font-size:14px; color:#1c2230; margin-top:16px;">
+      <tr><td style="padding:6px 0; color:#6b7280;">Registration ID</td><td style="text-align:right; font-weight:bold;">{{ registrant.registration_id }}</td></tr>
+      <tr><td style="padding:6px 0; color:#6b7280;">Department & Batch</td><td style="text-align:right;">{{ registrant.department_class }} ({{ registrant.passing_year }})</td></tr>
+      <tr><td style="padding:6px 0; color:#6b7280;">T-Shirt Size</td><td style="text-align:right;">{{ registrant.get_tshirt_size_display }}</td></tr>
+    </table>
+    <p style="color:#6b7280; font-size:13px; margin-top:20px;">
+      কোনো প্রশ্ন থাকলে এই ইমেইলের রিপ্লাই করুন। আমরা আপনার জন্য অপেক্ষায় থাকবো!
+    </p>
+  </div>
+  <p style="text-align:center; color:#9aa0ab; font-size:11.5px; margin-top:16px;">
+    {{ SCHOOL_NAME }} &middot; {{ EVENT_SHORT_NAME }}
+  </p>
+</div>
