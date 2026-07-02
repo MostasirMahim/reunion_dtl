@@ -1,10 +1,11 @@
 {% extends "registration/base.html" %}
+{% load static %}
 {% block body %}
 <div class="admin-shell">
   <header class="admin-topbar">
     <div class="wrap">
       <div class="brand">
-        <div class="brand-mark" style="width:34px; height:34px; font-size:14px;">{{ EVENT_SHORT_NAME|slice:":1" }}</div>
+        <img class="brand-mark" style="width:34px; height:34px;" src="{% static 'img/bss-logo.jpg' %}" alt="{{ SCHOOL_NAME }} logo">
         <div class="brand-text"><div class="event" style="font-size:16px;">Registrant Detail</div></div>
       </div>
       <nav>
@@ -58,6 +59,11 @@
           <a href="{{ registrant.ticket_pdf.url }}" class="btn btn-outline" style="color:var(--navy); border-color:var(--navy); padding:9px 18px; font-size:13.5px;" download>⬇ Ticket PDF</a>
         {% endif %}
       </div>
+    </div>
+
+    <div class="powered-by" style="color:var(--muted); margin-top:32px;">
+      Powered by <a href="https://bidyatek.com/" target="_blank" rel="noopener noreferrer" title="BIDYATek — School Management Software" style="color:var(--navy);">BIDYATek</a>
+      <span class="powered-by-tag" style="border-color:rgba(11,45,87,0.2); color:var(--muted);">School Management Software</span>
     </div>
   </div>
 </div>

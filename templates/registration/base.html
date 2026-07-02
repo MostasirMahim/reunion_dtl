@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}{{ EVENT_SHORT_NAME }} — {{ SCHOOL_NAME }}{% endblock %}</title>
+  <link rel="icon" type="image/jpeg" href="{% static 'img/bss-logo.jpg' %}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/main.css' %}">
@@ -18,7 +19,7 @@
   <header class="topbar">
     <div class="wrap">
       <a class="brand" href="{% url 'registration:home' %}">
-        <div class="brand-mark">{{ EVENT_SHORT_NAME|slice:":1" }}</div>
+        <img class="brand-mark" src="{% static 'img/bss-logo.jpg' %}" alt="{{ SCHOOL_NAME }} logo">
         <div class="brand-text">
           <div class="school">{{ SCHOOL_NAME }}</div>
           <div class="event">{{ EVENT_SHORT_NAME }}</div>
@@ -47,6 +48,10 @@
   <footer>
     <div class="wrap">
       &copy; {% now "Y" %} {{ SCHOOL_NAME }} · {{ EVENT_SHORT_NAME }}. All rights reserved.
+      <div class="powered-by">
+        Powered by <a href="https://bidyatek.com/" target="_blank" rel="noopener noreferrer" title="BIDYATek — School Management Software">BIDYATek</a>
+        <span class="powered-by-tag">School Management Software</span>
+      </div>
     </div>
   </footer>
   {% endblock %}

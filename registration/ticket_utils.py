@@ -171,10 +171,19 @@ def generate_ticket_pdf(registrant):
     # Footer
     c.setFillColor(GREY)
     c.setFont("NotoBengali", 7)
-    c.drawCentredString(card_x + card_w / 2, card_y + 7 * mm,
+    c.drawCentredString(card_x + card_w / 2, card_y + 11 * mm,
                          f"This ticket is valid only after successful payment confirmation.")
-    c.drawCentredString(card_x + card_w / 2, card_y + 3 * mm,
+    c.drawCentredString(card_x + card_w / 2, card_y + 7 * mm,
                          f"{settings.EVENT_SHORT_NAME} | Developed for {settings.SCHOOL_NAME}")
+
+    # Powered by BIDYATek strip
+    c.setStrokeColor(colors.HexColor("#E5E7EB"))
+    c.setLineWidth(0.5)
+    c.line(inner_x, card_y + 4.5 * mm, card_x + card_w - 8 * mm, card_y + 4.5 * mm)
+    c.setFillColor(NAVY)
+    c.setFont("NotoBengali", 7.5)
+    c.drawCentredString(card_x + card_w / 2, card_y + 1.5 * mm,
+                         "Powered by BIDYATek — School Management Software")
 
     c.showPage()
     c.save()
