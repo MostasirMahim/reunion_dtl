@@ -1,5 +1,5 @@
 from django import forms
-from .models import Registrant
+from .models import Registrant, SpecialFunding
 
 
 class RegistrationForm(forms.ModelForm):
@@ -17,20 +17,19 @@ class RegistrationForm(forms.ModelForm):
             "blood_group",
             "present_address",
             "tshirt_size",
-            "is_driver",
         ]
         widgets = {
             "full_name": forms.TextInput(attrs={
-                "class": "form-input", "placeholder": "আপনার পূর্ণ নাম লিখুন"
+                "class": "form-input", "placeholder": "Enter your full name"
             }),
             "phone": forms.TextInput(attrs={
                 "class": "form-input", "placeholder": "01XXXXXXXXX"
             }),
             "secondary_phone": forms.TextInput(attrs={
-                "class": "form-input", "placeholder": "01XXXXXXXXX (ঐচ্ছিক)"
+                "class": "form-input", "placeholder": "01XXXXXXXXX (optional)"
             }),
             "whatsapp_number": forms.TextInput(attrs={
-                "class": "form-input", "placeholder": "WhatsApp নম্বর (ঐচ্ছিক)"
+                "class": "form-input", "placeholder": "WhatsApp number (optional)"
             }),
             "email": forms.EmailInput(attrs={
                 "class": "form-input", "placeholder": "you@example.com"
@@ -42,7 +41,7 @@ class RegistrationForm(forms.ModelForm):
                 "class": "form-input", "placeholder": "e.g. 2005", "min": 1963, "max": 2035
             }),
             "ssc_passing_year": forms.NumberInput(attrs={
-                "class": "form-input", "placeholder": "e.g. 2005 (ঐচ্ছিক)", "min": 1963, "max": 2035
+                "class": "form-input", "placeholder": "e.g. 2005 (optional)", "min": 1963, "max": 2035
             }),
             "blood_group": forms.TextInput(attrs={
                 "class": "form-input", "placeholder": "e.g. B+ (optional)"
@@ -51,14 +50,13 @@ class RegistrationForm(forms.ModelForm):
                 "class": "form-input", "placeholder": "Present address (optional)"
             }),
             "tshirt_size": forms.Select(attrs={"class": "form-select"}),
-            "is_driver": forms.CheckboxInput(attrs={"class": "form-checkbox"}),
         }
 
     def clean_phone(self):
         phone = self.cleaned_data["phone"].strip()
         digits = phone.replace("+", "").replace(" ", "").replace("-", "")
         if not digits.isdigit() or len(digits) < 10:
-            raise forms.ValidationError("সঠিক মোবাইল নম্বর দিন।")
+            raise forms.ValidationError("Please enter a valid mobile number.")
         return phone
 
     def clean_secondary_phone(self):
@@ -67,7 +65,7 @@ class RegistrationForm(forms.ModelForm):
             return phone
         digits = phone.replace("+", "").replace(" ", "").replace("-", "")
         if not digits.isdigit() or len(digits) < 10:
-            raise forms.ValidationError("সঠিক মোবাইল নম্বর দিন।")
+            raise forms.ValidationError("Please enter a valid mobile number.")
         return phone
 
     def clean_whatsapp_number(self):
@@ -76,8 +74,54 @@ class RegistrationForm(forms.ModelForm):
             return phone
         digits = phone.replace("+", "").replace(" ", "").replace("-", "")
         if not digits.isdigit() or len(digits) < 10:
-            raise forms.ValidationError("সঠিক WhatsApp নম্বর দিন।")
+            raise forms.ValidationError("Please enter a valid WhatsApp number.")
         return phone
+
+
+class SpecialFundingForm(forms.ModelForm):
+    class Meta:
+        model = SpecialFunding
+        fields = [
+            "funding_type",
+            "ssc_batch",
+            "contributor_name",
+            "contributor_phone",
+            "amount",
+        ]
+        widgets = {
+            "funding_type": forms.RadioSelect(attrs={"class": "form-radio"}),
+            "ssc_batch": forms.NumberInput(attrs={
+                "class": "form-input", "placeholder": "e.g. 2005", "min": 1963, "max": 2035
+            }),
+            "contributor_name": forms.TextInput(attrs={
+                "class": "form-input", "placeholder": "Full name"
+            }),
+            "contributor_phone": forms.TextInput(attrs={
+                "class": "form-input", "placeholder": "01XXXXXXXXX"
+            }),
+            "amount": forms.NumberInput(attrs={
+                "class": "form-input", "placeholder": "e.g. 5000", "min": 1
+            }),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        funding_type = cleaned_data.get("funding_type")
+
+        if funding_type == "batch":
+            if not cleaned_data.get("ssc_batch"):
+                self.add_error("ssc_batch", "Please enter the SSC batch year.")
+        elif funding_type == "individual":
+            if not cleaned_data.get("contributor_name"):
+                self.add_error("contributor_name", "Please enter your name.")
+            if not cleaned_data.get("contributor_phone"):
+                self.add_error("contributor_phone", "Please enter your phone number.")
+
+        amount = cleaned_data.get("amount")
+        if amount is not None and amount <= 0:
+            self.add_error("amount", "Amount must be greater than 0.")
+
+        return cleaned_data
 
 
 class AdminLoginForm(forms.Form):
@@ -94,7 +138,7 @@ class RegistrantSearchForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={
             "class": "form-input",
-            "placeholder": "নাম, ফোন নম্বর বা রেজিস্ট্রেশন আইডি দিয়ে খুঁজুন...",
+            "placeholder": "Search by name, phone, or Registration ID...",
         }),
     )
     status = forms.ChoiceField(

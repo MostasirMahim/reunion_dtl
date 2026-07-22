@@ -158,6 +158,16 @@ a { color: inherit; text-decoration: none; }
 .form-checkbox-row label { font-size: 13.5px; font-weight: 600; color: var(--navy); margin: 0; }
 .form-checkbox-row .hint { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
+.funding-type-group { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 22px; }
+.funding-type-option {
+  display: flex; align-items: center; gap: 10px; cursor: pointer;
+  border: 1.5px solid var(--line); border-radius: 10px; padding: 14px 16px;
+  font-weight: 600; font-size: 14px; color: var(--navy); transition: border-color .15s ease, background .15s ease;
+}
+.funding-type-option input[type=radio] { width: 18px; height: 18px; accent-color: var(--gold); }
+.funding-type-option.active { border-color: var(--gold); background: rgba(199,154,60,0.08); }
+@media (max-width: 640px) { .funding-type-group { grid-template-columns: 1fr; } }
+
 .fee-tier-table { width: 100%; border-collapse: collapse; margin: 10px 0 0; font-size: 13.5px; }
 .fee-tier-table td { padding: 8px 10px; border-bottom: 1px solid var(--line); }
 .fee-tier-table td:last-child { text-align: right; font-weight: 700; color: var(--navy); white-space: nowrap; }
@@ -211,7 +221,7 @@ footer a { color: var(--gold-light); }
   background: var(--navy-deep); color: #fff; padding: 14px 0;
 }
 .admin-topbar .wrap { display: flex; justify-content: space-between; align-items: center; }
-.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin: 26px 0; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 18px; margin: 26px 0; }
 .stat-card { background: #fff; border-radius: 14px; padding: 20px; box-shadow: var(--shadow); border: 1px solid var(--line); }
 .stat-card .num { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--navy); }
 .stat-card .lab { font-size: 12.5px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }

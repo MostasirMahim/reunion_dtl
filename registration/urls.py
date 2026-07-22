@@ -6,6 +6,8 @@ app_name = "registration"
 urlpatterns = [
     path("", views.home, name="home"),
     path("register/", views.register, name="register"),
+    path("special-funding/", views.special_funding, name="special_funding"),
+    path("special-funding/thank-you/<str:funding_id>/", views.funding_success, name="funding_success"),
 
     path("payment/success/", views.payment_success, name="payment_success"),
     path("payment/fail/", views.payment_fail, name="payment_fail"),

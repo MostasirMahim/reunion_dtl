@@ -4,8 +4,8 @@
   </div>
   <div style="background:#fff; padding:26px; border-radius:0 0 12px 12px; border:1px solid #e7e1d3;">
     <p style="color:#1c2230; font-size:14.5px;">
-      প্রিয় {{ registrant.full_name }},<br><br>
-      আপনার পেমেন্টটি SSLCommerz এর মাধ্যমে সফলভাবে সম্পন্ন হয়েছে। নিচে আপনার পেমেন্টের বিবরণ দেওয়া হলো:
+      Dear {{ registrant.full_name }},<br><br>
+      Your payment has been completed successfully via SSLCommerz. The payment details are below:
     </p>
     <table style="width:100%; font-size:14px; color:#1c2230; margin-top:16px;">
       <tr><td style="padding:6px 0; color:#6b7280;">Transaction ID</td><td style="text-align:right; font-weight:bold;">{{ registrant.transaction_id }}</td></tr>
@@ -15,7 +15,7 @@
       <tr><td style="padding:6px 0; color:#6b7280;">Paid At</td><td style="text-align:right;">{{ registrant.paid_at|date:"d M Y, h:i A" }}</td></tr>
     </table>
     <p style="color:#6b7280; font-size:13px; margin-top:20px;">
-      এই রশিদটি সংরক্ষণ করুন। আপনার এন্ট্রি টিকেট আলাদা ইমেইলে পাঠানো হয়েছে।
+      Please keep this receipt for your records. Your entry ticket has been sent in a separate email.
     </p>
   </div>
   <p style="text-align:center; color:#9aa0ab; font-size:11.5px; margin-top:16px;">

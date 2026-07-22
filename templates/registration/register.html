@@ -3,8 +3,8 @@
 <section class="hero" style="padding-bottom: 110px;">
   <div class="wrap">
     <span class="eyebrow">Step 1 of 2</span>
-    <h1 style="font-size:38px;">রেজিস্ট্রেশন ফর্ম</h1>
-    <p class="lead">নিচের তথ্যগুলো সঠিকভাবে পূরণ করুন — পেমেন্ট সফল হলে এই তথ্য অনুযায়ী আপনার টিকেট তৈরি হবে।</p>
+    <h1 style="font-size:38px;">Registration Form</h1>
+    <p class="lead">Please fill in the information below accurately — your ticket will be generated based on these details once payment is successful.</p>
   </div>
 </section>
 
@@ -16,33 +16,33 @@
         <div class="amount" id="feeAmount">৳---</div>
       </div>
       <div style="font-size:13px; color:var(--muted); max-width:220px; text-align:right;">
-        SSLCommerz এর মাধ্যমে নিরাপদ পেমেন্ট — bKash / Nagad / Card / Bank
+        Secure payment via SSLCommerz — bKash / Nagad / Card / Bank
       </div>
     </div>
 
     <table class="fee-tier-table" style="margin-bottom:24px;">
-      <tr><td>১৯৬৩ - ২০১৯ সাল পর্যন্ত পাস করা প্রতিজন</td><td>৳১,৫০০</td></tr>
-      <tr><td>২০২০ - ২০২৬ সাল পর্যন্ত পাস করা প্রতিজন</td><td>৳১,০০০</td></tr>
-      <tr><td>স্কুলের বর্তমান ছাত্র/ছাত্রী প্রতিজন</td><td>৳৩০০</td></tr>
-      <tr><td>ড্রাইভার (শুধুমাত্র দুপুরের খাবার)</td><td>+৳৫০০</td></tr>
+      <tr><td>1963 - 2015 batch, per person</td><td>৳1,500</td></tr>
+      <tr><td>2016 - 2019 batch, per person</td><td>৳1,000</td></tr>
+      <tr><td>2020 - 2026 batch, per person</td><td>৳500</td></tr>
+      <tr><td>Current students of the school, per person</td><td>৳200</td></tr>
     </table>
 
     <form method="post" novalidate id="regForm">
       {% csrf_token %}
       <div class="form-row">
-        <label for="{{ form.full_name.id_for_label }}">পূর্ণ নাম *</label>
+        <label for="{{ form.full_name.id_for_label }}">Full Name *</label>
         {{ form.full_name }}
         {{ form.full_name.errors }}
       </div>
 
       <div class="form-grid-2">
         <div class="form-row">
-          <label for="{{ form.phone.id_for_label }}">মোবাইল নম্বর (Primary) *</label>
+          <label for="{{ form.phone.id_for_label }}">Mobile Number (Primary) *</label>
           {{ form.phone }}
           {{ form.phone.errors }}
         </div>
         <div class="form-row">
-          <label for="{{ form.secondary_phone.id_for_label }}">সেকেন্ডারি মোবাইল নম্বর</label>
+          <label for="{{ form.secondary_phone.id_for_label }}">Secondary Mobile Number</label>
           {{ form.secondary_phone }}
           {{ form.secondary_phone.errors }}
         </div>
@@ -50,36 +50,37 @@
 
       <div class="form-grid-2">
         <div class="form-row">
-          <label for="{{ form.whatsapp_number.id_for_label }}">WhatsApp নম্বর</label>
+          <label for="{{ form.whatsapp_number.id_for_label }}">WhatsApp Number</label>
           {{ form.whatsapp_number }}
           {{ form.whatsapp_number.errors }}
         </div>
         <div class="form-row">
-          <label for="{{ form.email.id_for_label }}">ইমেইল *</label>
+          <label for="{{ form.email.id_for_label }}">Email *</label>
           {{ form.email }}
           {{ form.email.errors }}
-          <div class="hint">টিকেট এই ইমেইলে পাঠানো হবে</div>
+          <div class="hint">Your ticket will be sent to this email</div>
         </div>
       </div>
 
       <div class="form-row">
-        <label for="{{ form.last_class_attended.id_for_label }}">সর্বশেষ শ্রেণি (Last Class Attended) *</label>
+        <label for="{{ form.last_class_attended.id_for_label }}">Last Class Attended *</label>
         {{ form.last_class_attended }}
         {{ form.last_class_attended.errors }}
       </div>
 
       <div class="form-grid-2">
         <div class="form-row">
-          <label for="{{ form.ssc_batch.id_for_label }}">SSC ব্যাচ *</label>
+          <label for="{{ form.ssc_batch.id_for_label }}">SSC Batch *</label>
           {{ form.ssc_batch }}
           {{ form.ssc_batch.errors }}
           <div class="hint">
-            এসএসসি পাস করে থাকলে পাসের সাল দিন। এখনো পাস না করে থাকলে (বর্তমান ছাত্র/ছাত্রী)
-            কোন সালে পাস করবেন সেই সালটি দিন — এই সাল অনুযায়ীই রেজিস্ট্রেশন ফি নির্ধারণ হবে।
+            If you have already passed SSC, enter your passing year. If you haven't passed yet
+            (current student), enter the year you expect to pass — the registration fee is
+            determined by this year.
           </div>
         </div>
         <div class="form-row">
-          <label for="{{ form.ssc_passing_year.id_for_label }}">SSC পাসিং ইয়ার (ঐচ্ছিক)</label>
+          <label for="{{ form.ssc_passing_year.id_for_label }}">SSC Passing Year (optional)</label>
           {{ form.ssc_passing_year }}
           {{ form.ssc_passing_year.errors }}
         </div>
@@ -87,37 +88,28 @@
 
       <div class="form-grid-2">
         <div class="form-row">
-          <label for="{{ form.blood_group.id_for_label }}">রক্তের গ্রুপ</label>
+          <label for="{{ form.blood_group.id_for_label }}">Blood Group</label>
           {{ form.blood_group }}
           {{ form.blood_group.errors }}
         </div>
         <div class="form-row">
-          <label for="{{ form.tshirt_size.id_for_label }}">টি-শার্ট সাইজ *</label>
+          <label for="{{ form.tshirt_size.id_for_label }}">T-Shirt Size *</label>
           {{ form.tshirt_size }}
           {{ form.tshirt_size.errors }}
         </div>
       </div>
 
       <div class="form-row">
-        <label for="{{ form.present_address.id_for_label }}">বর্তমান ঠিকানা</label>
+        <label for="{{ form.present_address.id_for_label }}">Present Address</label>
         {{ form.present_address }}
         {{ form.present_address.errors }}
       </div>
 
-      <div class="form-checkbox-row">
-        {{ form.is_driver }}
-        <div>
-          <label for="{{ form.is_driver.id_for_label }}">আপনার সাথে কি ড্রাইভার আসবে?</label>
-          <div class="hint">টিক দিলে অতিরিক্ত ৳৫০০ যোগ হবে (শুধুমাত্র দুপুরের খাবারের জন্য) — টিকেটেও এটি উল্লেখ থাকবে।</div>
-          {{ form.is_driver.errors }}
-        </div>
-      </div>
-
       <button type="submit" class="btn btn-gold btn-block" style="margin-top:10px;">
-        পেমেন্ট করুন — <span id="feeAmountBtn">৳---</span> →
+        Proceed to Payment — <span id="feeAmountBtn">৳---</span> →
       </button>
       <p style="text-align:center; font-size:12.5px; color:var(--muted); margin-top:14px;">
-        "পেমেন্ট করুন" বাটনে ক্লিক করলে আপনি SSLCommerz পেমেন্ট পেইজে যাবেন।
+        Clicking "Proceed to Payment" will take you to the SSLCommerz payment page.
       </p>
     </form>
   </div>
@@ -126,7 +118,6 @@
 <script>
 (function () {
   var sscInput = document.getElementById("{{ form.ssc_batch.id_for_label }}");
-  var driverInput = document.getElementById("{{ form.is_driver.id_for_label }}");
   var feeAmountEl = document.getElementById("feeAmount");
   var feeAmountBtnEl = document.getElementById("feeAmountBtn");
 
@@ -134,18 +125,17 @@
     var year = parseInt(sscInput.value, 10);
     var fee = 1500;
     if (!isNaN(year)) {
-      if (year <= 2019) { fee = 1500; }
-      else if (year <= 2026) { fee = 1000; }
-      else { fee = 300; }
+      if (year <= 2015) { fee = 1500; }
+      else if (year <= 2019) { fee = 1000; }
+      else if (year <= 2026) { fee = 500; }
+      else { fee = 200; }
     }
-    if (driverInput.checked) { fee += 500; }
     feeAmountEl.textContent = "৳" + fee;
     feeAmountBtnEl.textContent = "৳" + fee;
   }
 
-  if (sscInput && driverInput) {
+  if (sscInput) {
     sscInput.addEventListener("input", calculateFee);
-    driverInput.addEventListener("change", calculateFee);
     calculateFee();
   }
 })();

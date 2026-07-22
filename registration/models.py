@@ -14,6 +14,14 @@ def generate_registration_id():
     return f"{prefix}{year_part}-{rand_part}"
 
 
+def generate_funding_id():
+    """e.g. BSSF26-000123 style unique id for a special funding contribution."""
+    prefix = getattr(settings, "EVENT_SHORT_NAME", "BSSREUNION")[:3].upper()
+    year_part = "26"
+    rand_part = "".join(random.choices(string.digits, k=6))
+    return f"{prefix}F{year_part}-{rand_part}"
+
+
 TSHIRT_CHOICES = [
     ("S", "Small"),
     ("M", "Medium"),
@@ -29,34 +37,37 @@ PAYMENT_STATUS_CHOICES = [
     ("cancelled", "Cancelled"),
 ]
 
-DRIVER_FEE = 500
+FUNDING_TYPE_CHOICES = [
+    ("individual", "Individual"),
+    ("batch", "Batch"),
+]
 
 
 def calculate_registration_fee(ssc_batch):
     """
-    Fee tiers (as of the school's official notice):
-      1963 - 2019  -> 1500 taka
-      2020 - 2026  -> 1000 taka
-      2027 onwards -> 300 taka (current students of the school, not yet passed SSC)
+    Fee tiers (per the official notice dated 18 July 2026):
+      1963 - 2015  -> 1500 taka
+      2016 - 2019  -> 1000 taka
+      2020 - 2026  -> 500 taka
+      2027 onwards -> 200 taka (current students of the school, not yet passed SSC)
     """
     try:
         year = int(ssc_batch)
     except (TypeError, ValueError):
         return 1500
 
-    if year <= 2019:
+    if year <= 2015:
         return 1500
-    elif year <= 2026:
+    elif year <= 2019:
         return 1000
+    elif year <= 2026:
+        return 500
     else:
-        return 300
+        return 200
 
 
-def calculate_total_fee(ssc_batch, is_driver=False):
-    total = calculate_registration_fee(ssc_batch)
-    if is_driver:
-        total += DRIVER_FEE
-    return total
+def calculate_total_fee(ssc_batch):
+    return calculate_registration_fee(ssc_batch)
 
 
 class Registrant(models.Model):
@@ -78,9 +89,6 @@ class Registrant(models.Model):
     blood_group = models.CharField(max_length=5, blank=True, null=True)
     present_address = models.CharField(max_length=255, blank=True, null=True)
     tshirt_size = models.CharField(max_length=4, choices=TSHIRT_CHOICES)
-    is_driver = models.BooleanField(
-        default=False, help_text="Bringing own driver (+৳500, lunch only)"
-    )
 
     # Registration meta
     registration_id = models.CharField(
@@ -129,8 +137,61 @@ class Registrant(models.Model):
     @property
     def fee_tier_label(self):
         if self.is_current_student:
-            return "স্কুলের বর্তমান ছাত্র/ছাত্রী"
+            return "Current Student of the School"
+        elif self.ssc_batch <= 2015:
+            return "1963 - 2015 Batch"
         elif self.ssc_batch <= 2019:
-            return "১৯৬৩ - ২০১৯ ব্যাচ"
+            return "2016 - 2019 Batch"
         else:
-            return "২০২০ - ২০২৬ ব্যাচ"
+            return "2020 - 2026 Batch"
+
+
+class SpecialFunding(models.Model):
+    """A voluntary special contribution, given either by an individual or on
+    behalf of a whole SSC batch."""
+
+    funding_type = models.CharField(max_length=10, choices=FUNDING_TYPE_CHOICES)
+
+    # Filled in when funding_type == "batch"
+    ssc_batch = models.PositiveIntegerField(blank=True, null=True)
+
+    # Filled in when funding_type == "individual"
+    contributor_name = models.CharField(max_length=150, blank=True, null=True)
+    contributor_phone = models.CharField(max_length=20, blank=True, null=True)
+
+    amount = models.PositiveIntegerField(help_text="Contribution amount in Taka")
+
+    funding_id = models.CharField(
+        max_length=30, unique=True, default=generate_funding_id, editable=False
+    )
+
+    # Payment
+    payment_status = models.CharField(
+        max_length=10, choices=PAYMENT_STATUS_CHOICES, default="pending"
+    )
+    transaction_id = models.CharField(max_length=64, unique=True)
+    sslcz_val_id = models.CharField(max_length=100, blank=True, null=True)
+    sslcz_bank_tran_id = models.CharField(max_length=100, blank=True, null=True)
+    sslcz_card_type = models.CharField(max_length=50, blank=True, null=True)
+    paid_at = models.DateTimeField(blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+        verbose_name = "Special Funding"
+        verbose_name_plural = "Special Funding"
+
+    def __str__(self):
+        return f"{self.display_name} — Tk {self.amount} ({self.funding_id})"
+
+    @property
+    def is_paid(self):
+        return self.payment_status == "paid"
+
+    @property
+    def display_name(self):
+        if self.funding_type == "batch":
+            return f"Batch {self.ssc_batch}"
+        return self.contributor_name or "Individual Contributor"

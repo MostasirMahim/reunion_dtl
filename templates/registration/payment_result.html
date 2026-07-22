@@ -3,11 +3,15 @@
 <div class="ticket-wrap" style="text-align:center;">
   <div style="font-size:48px;">{% if status == 'cancelled' %}⚠️{% else %}✕{% endif %}</div>
   <h2 style="margin-top:10px;">
-    {% if status == 'cancelled' %}পেমেন্ট বাতিল করা হয়েছে{% else %}পেমেন্ট ব্যর্থ হয়েছে{% endif %}
+    {% if status == 'cancelled' %}Payment Cancelled{% else %}Payment Failed{% endif %}
   </h2>
   <p style="color:var(--muted); margin-top:8px;">
-    দুঃখিত, আপনার পেমেন্ট সম্পন্ন হয়নি। অনুগ্রহ করে আবার চেষ্টা করুন।
+    Sorry, your payment could not be completed. Please try again.
   </p>
-  <a class="btn btn-gold" href="{% url 'registration:register' %}" style="margin-top:24px;">আবার রেজিস্ট্রেশন করুন</a>
+  {% if funding %}
+    <a class="btn btn-gold" href="{% url 'registration:special_funding' %}" style="margin-top:24px;">Try Again</a>
+  {% else %}
+    <a class="btn btn-gold" href="{% url 'registration:register' %}" style="margin-top:24px;">Register Again</a>
+  {% endif %}
 </div>
 {% endblock %}

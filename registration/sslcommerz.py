@@ -55,6 +55,48 @@ def init_payment(registrant, request):
     return data
 
 
+def init_funding_payment(funding, request):
+    """
+    Same as init_payment() but for a SpecialFunding contribution instead
+    of an event Registrant.
+    """
+    base_url = settings.SITE_BASE_URL.rstrip("/")
+
+    if funding.funding_type == "batch":
+        cus_name = f"Batch {funding.ssc_batch}"
+        cus_phone = "N/A"
+    else:
+        cus_name = funding.contributor_name or "Contributor"
+        cus_phone = funding.contributor_phone or "N/A"
+
+    payload = {
+        "store_id": settings.SSLCOMMERZ_STORE_ID,
+        "store_passwd": settings.SSLCOMMERZ_STORE_PASSWORD,
+        "total_amount": funding.amount,
+        "currency": "BDT",
+        "tran_id": funding.transaction_id,
+        "success_url": f"{base_url}/payment/success/",
+        "fail_url": f"{base_url}/payment/fail/",
+        "cancel_url": f"{base_url}/payment/cancel/",
+        "ipn_url": f"{base_url}/payment/ipn/",
+        "cus_name": cus_name,
+        "cus_email": "no-reply@bssreunion.com",
+        "cus_add1": "N/A",
+        "cus_city": "Dhaka",
+        "cus_country": "Bangladesh",
+        "cus_phone": cus_phone,
+        "shipping_method": "NO",
+        "product_name": f"{settings.EVENT_SHORT_NAME} Special Funding",
+        "product_category": "Special Funding",
+        "product_profile": "general",
+        "value_a": funding.funding_id,
+    }
+
+    response = requests.post(_init_url(), data=payload, timeout=20)
+    data = response.json()
+    return data
+
+
 def validate_payment(val_id):
     """Server-to-server validation of a transaction using val_id."""
     params = {

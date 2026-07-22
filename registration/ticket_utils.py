@@ -137,15 +137,6 @@ def generate_ticket_pdf(registrant):
                f"{registrant.last_class_attended} — Batch {registrant.ssc_batch}", 9 * mm, 11)
     draw_field("T-SHIRT SIZE", registrant.get_tshirt_size_display(), 9 * mm, 11)
 
-    if registrant.is_driver:
-        c.setFillColor(GREY)
-        c.setFont(*label_font)
-        c.drawString(inner_x, y, "WITH DRIVER")
-        c.setFillColor(ORANGE)
-        c.setFont("NotoBengali", 9.5)
-        c.drawString(inner_x, y - 5 * mm, "হ্যাঁ — শুধুমাত্র দুপুরের খাবারের জন্য (+৳500)")
-        y -= 8 * mm
-
     # Bottom divider
     c.setStrokeColor(colors.HexColor("#E5E7EB"))
     c.setLineWidth(0.6)
@@ -170,7 +161,7 @@ def generate_ticket_pdf(registrant):
     y -= 7 * mm
     c.setFillColor(GREY)
     c.setFont("NotoBengali", 7.5)
-    c.drawString(inner_x, y, "এই টিকেট দিয়ে যা যা পাবেন")
+    c.drawString(inner_x, y, "This ticket includes")
     y -= 5.5 * mm
 
     coupons = ["Sovereign Bag", "Morning Snacks", "Lunch", "Evening Snacks"]

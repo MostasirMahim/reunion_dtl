@@ -3,8 +3,8 @@
 <section class="hero" style="padding-bottom:90px;">
   <div class="wrap">
     <span class="eyebrow">Check Status</span>
-    <h1 style="font-size:34px;">আপনার রেজিস্ট্রেশন স্ট্যাটাস চেক করুন</h1>
-    <p class="lead">Registration ID অথবা মোবাইল নম্বর দিয়ে সার্চ করুন।</p>
+    <h1 style="font-size:34px;">Check Your Registration Status</h1>
+    <p class="lead">Search using your Registration ID or mobile number.</p>
   </div>
 </section>
 
@@ -14,9 +14,9 @@
       <div class="form-row">
         <label>Registration ID / Mobile Number</label>
         <input type="text" name="q" class="form-input" value="{{ query }}"
-               placeholder="e.g. BSSR26-657050 অথবা 017XXXXXXXX" autofocus>
+               placeholder="e.g. BSSR26-657050 or 017XXXXXXXX" autofocus>
       </div>
-      <button type="submit" class="btn btn-gold btn-block">খুঁজুন</button>
+      <button type="submit" class="btn btn-gold btn-block">Search</button>
     </form>
 
     {% if searched %}
@@ -33,16 +33,16 @@
             </div>
             {% if r.is_paid %}
               <a href="{% url 'registration:ticket_view' r.registration_id r.verify_token %}"
-                 class="btn btn-navy" style="margin-top:14px; padding:9px 18px; font-size:13.5px;">টিকেট দেখুন →</a>
+                 class="btn btn-navy" style="margin-top:14px; padding:9px 18px; font-size:13.5px;">View Ticket →</a>
             {% else %}
               <p style="font-size:13px; color:var(--muted); margin-top:10px;">
-                পেমেন্ট এখনো সম্পন্ন হয়নি। সফল হলে এখানে টিকেট দেখা যাবে।
+                Payment has not been completed yet. Your ticket will appear here once it is.
               </p>
             {% endif %}
           </div>
           {% endfor %}
         {% else %}
-          <p style="text-align:center; color:var(--muted);">কোনো রেজিস্ট্রেশন পাওয়া যায়নি।</p>
+          <p style="text-align:center; color:var(--muted);">No registration found.</p>
         {% endif %}
       </div>
     {% endif %}

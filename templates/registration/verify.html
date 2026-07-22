@@ -5,7 +5,7 @@
     <div class="card" style="text-align:center; border-color:var(--danger);">
       <div style="font-size:42px;">✕</div>
       <h3 style="color:var(--danger); margin-top:8px;">Invalid Ticket</h3>
-      <p>এই QR কোডটি কোনো বৈধ রেজিস্ট্রেশনের সাথে মিলেনি।</p>
+      <p>This QR code did not match any valid registration.</p>
     </div>
   {% else %}
     <div class="card" style="border-top:4px solid {% if registrant.is_paid %}var(--success){% else %}var(--danger){% endif %};">
@@ -24,9 +24,6 @@
       <div class="ticket-field"><div class="label">Phone</div><div class="value">{{ registrant.phone }}</div></div>
       <div class="ticket-field"><div class="label">Last Class Attended / SSC Batch</div><div class="value">{{ registrant.last_class_attended }} — Batch {{ registrant.ssc_batch }}</div></div>
       <div class="ticket-field"><div class="label">T-Shirt</div><div class="value">{{ registrant.get_tshirt_size_display }}</div></div>
-      {% if registrant.is_driver %}
-      <div class="ticket-field"><div class="label">With Driver</div><div class="value" style="color:#D97706;">হ্যাঁ — শুধুমাত্র দুপুরের খাবার (+৳500)</div></div>
-      {% endif %}
 
       <div style="margin-top:10px;">
         {% if registrant.is_checked_in %}
@@ -44,7 +41,7 @@
         </form>
       {% elif not user.is_authenticated %}
         <p style="font-size:12.5px; color:var(--muted); margin-top:16px;">
-          Check-in করতে <a href="{% url 'registration:admin_login' %}" style="color:var(--navy); text-decoration:underline;">গেট স্টাফ লগইন</a> করুন।
+          Please <a href="{% url 'registration:admin_login' %}" style="color:var(--navy); text-decoration:underline;">log in as gate staff</a> to check in.
         </p>
       {% endif %}
     </div>

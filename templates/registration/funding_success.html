@@ -1,0 +1,47 @@
+{% extends "registration/base.html" %}
+{% block content %}
+<div class="ticket-wrap">
+  <div style="text-align:center; margin-bottom:18px;">
+    <div style="font-size:42px;">🙏</div>
+    <h2 style="font-size:24px;">Thank You for Your Contribution!</h2>
+    <p style="color:var(--muted); font-size:14.5px;">
+      Your special funding contribution has been recorded. We truly appreciate your support.
+    </p>
+  </div>
+
+  <div class="ticket-card">
+    <div class="ticket-banner">SPECIAL FUNDING RECEIPT</div>
+    <div class="ticket-header">
+      <h3 style="font-size:18px;">{{ SCHOOL_NAME|upper }}</h3>
+      <div style="color:var(--muted); font-size:13px;">{{ EVENT_FULL_NAME }}</div>
+    </div>
+
+    <div class="ticket-field">
+      <div class="label">Funding ID</div>
+      <div class="value" style="color:var(--navy);">{{ funding.funding_id }}</div>
+    </div>
+    <div class="ticket-field">
+      <div class="label">Contributed By</div>
+      <div class="value">{{ funding.display_name }}</div>
+    </div>
+    {% if funding.funding_type == "individual" %}
+    <div class="ticket-field">
+      <div class="label">Phone</div>
+      <div class="value">{{ funding.contributor_phone }}</div>
+    </div>
+    {% endif %}
+    <div class="ticket-field">
+      <div class="label">Amount</div>
+      <div class="value">৳{{ funding.amount }}</div>
+    </div>
+
+    <div style="text-align:center; margin-top:10px;">
+      <span class="status-pill status-{{ funding.payment_status }}">{{ funding.get_payment_status_display }}</span>
+    </div>
+  </div>
+
+  <p style="text-align:center; font-size:12px; color:var(--muted); margin-top:10px;">
+    Powered by <a href="https://bidyatek.com/" target="_blank" rel="noopener noreferrer" title="BIDYATek — School Management Software" style="color:var(--navy); font-weight:700; text-decoration:none;">BIDYATek</a> — School Management Software
+  </p>
+</div>
+{% endblock %}

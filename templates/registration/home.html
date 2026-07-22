@@ -5,13 +5,19 @@
     <span class="eyebrow">Once a Baraibunian, always a Baraibunian</span>
     <h1>{{ EVENT_FULL_NAME }}</h1>
     <p class="lead">
-      বহু বছর পর আবার একসাথে — পুরোনো বন্ধু, প্রিয় শিক্ষক আর হারিয়ে যাওয়া দিনগুলোর গল্প নিয়ে
-      ফিরে আসছে {{ SCHOOL_NAME }}-এর সবচেয়ে বড় পুনর্মিলনী।
+      Coming together again after so many years — old friends, beloved teachers, and stories
+      of days gone by. {{ SCHOOL_NAME }}'s biggest reunion is happening once more.
     </p>
     <div class="meta-row">
       <div class="meta-item"><span class="ic">📅</span> {{ EVENT_DATE_TEXT }}</div>
       <div class="meta-item"><span class="ic">📍</span> Baraibunia, Nazirpur, Pirojpur</div>
-      <div class="meta-item"><span class="ic">৳</span> রেজিস্ট্রেশন ফি ৳৩০০ থেকে শুরু</div>
+      <div class="meta-item"><span class="ic">৳</span> Registration fee starts from ৳200</div>
+    </div>
+    <div class="card" style="margin-top:24px; max-width:520px; padding:16px 20px; border-color:var(--gold);">
+      <p style="font-size:13.5px; color:var(--navy); font-weight:600; margin:0;">
+        📌 Registration window: <strong>August 1, 2026 – September 30, 2026</strong>.
+        The deadline will not be extended under any circumstances — please register early.
+      </p>
     </div>
     <div style="margin-top:36px;">
       <a class="btn btn-gold" href="{% url 'registration:register' %}">Register Now →</a>
@@ -24,24 +30,24 @@
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow">Process</div>
-      <h2>সহজ ৪টি ধাপে রেজিস্ট্রেশন</h2>
-      <p>নাম এন্ট্রি করুন, পেমেন্ট করুন, আর সরাসরি আপনার ইমেইলে পেয়ে যান এন্ট্রি টিকেট।</p>
+      <h2>Register in 3 Easy Steps</h2>
+      <p>Enter your details, complete payment, and receive your entry ticket directly in your email.</p>
     </div>
     <div class="grid-3">
       <div class="card">
         <div class="ic-badge">1</div>
-        <h3>তথ্য দিন</h3>
-        <p>নাম, ফোন, পাসিং ইয়ার ও প্রয়োজনীয় তথ্য দিয়ে ফর্ম পূরণ করুন।</p>
+        <h3>Fill in Your Details</h3>
+        <p>Fill out the form with your name, phone, SSC batch, and other required information.</p>
       </div>
       <div class="card">
         <div class="ic-badge">2</div>
-        <h3>পেমেন্ট করুন</h3>
-        <p>SSLCommerz এর মাধ্যমে নিরাপদে bKash, Nagad, Card বা ব্যাংক দিয়ে ফি পরিশোধ করুন।</p>
+        <h3>Make Payment</h3>
+        <p>Pay the fee securely via SSLCommerz using bKash, Nagad, Card, or Bank.</p>
       </div>
       <div class="card">
         <div class="ic-badge">3</div>
-        <h3>টিকেট পান</h3>
-        <p>পেমেন্ট সফল হলেই আপনার ইমেইলে QR কোডসহ অফিসিয়াল এন্ট্রি টিকেট চলে যাবে।</p>
+        <h3>Get Your Ticket</h3>
+        <p>As soon as payment succeeds, your official entry ticket with QR code is emailed to you.</p>
       </div>
     </div>
   </div>
@@ -51,17 +57,17 @@
   <div class="wrap grid-2" style="align-items:center;">
     <div>
       <div class="eyebrow" style="color:var(--gold); font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:12.5px;">Reunion Spirit</div>
-      <h2 style="margin-top:10px; font-size:30px;">এক ছাদের নিচে আবার সবাই</h2>
+      <h2 style="margin-top:10px; font-size:30px;">All Together Again, Under One Roof</h2>
       <p style="color:var(--muted); margin-top:14px; font-size:15px;">
-        সাবেক শিক্ষার্থীদের জন্য এক অনন্য আয়োজন — স্মৃতিচারণ, সাংস্কৃতিক অনুষ্ঠান, খাবার ও
-        সবার সাথে নতুন করে পরিচয়ের সুযোগ। নিজের রেজিস্ট্রেশন আইডি দিয়ে গেটে সহজেই প্রবেশ করুন।
+        A special gathering for former students — nostalgia, cultural programs, food, and a
+        chance to reconnect with everyone. Enter the gate easily using your Registration ID.
       </p>
-      <a class="btn btn-navy" href="{% url 'registration:register' %}" style="margin-top:18px;">এখনই রেজিস্ট্রেশন করুন</a>
+      <a class="btn btn-navy" href="{% url 'registration:register' %}" style="margin-top:18px;">Register Now</a>
     </div>
     <div class="card" style="text-align:center;">
       <div class="ic-badge" style="margin:0 auto 16px;">✓</div>
-      <h3>প্রতিটি টিকেট QR কোড দ্বারা যাচাইকৃত</h3>
-      <p>প্রবেশ গেটে শুধু QR কোড স্ক্যান করলেই নিশ্চিত হবে আপনার রেজিস্ট্রেশন।</p>
+      <h3>Every Ticket is QR-Code Verified</h3>
+      <p>A simple QR code scan at the entry gate is all it takes to confirm your registration.</p>
     </div>
   </div>
 </section>
@@ -71,22 +77,22 @@
     <div>
       <div class="section-head" style="text-align:left; margin-bottom:18px;">
         <div class="eyebrow">Registration Fee</div>
-        <h2 style="font-size:26px;">রেজিস্ট্রেশন ফি</h2>
+        <h2 style="font-size:26px;">Registration Fee</h2>
       </div>
       <table class="fee-tier-table">
-        <tr><td>১৯৬৩ সাল থেকে ২০১৯ পর্যন্ত প্রতিজন</td><td>৳১,৫০০</td></tr>
-        <tr><td>২০২০ সাল থেকে ২০২৬ সাল পর্যন্ত প্রতিজন</td><td>৳১,০০০</td></tr>
-        <tr><td>স্কুলের বর্তমান ছাত্র/ছাত্রী প্রতিজন</td><td>৳৩০০</td></tr>
-        <tr><td>ড্রাইভার প্রতিজন (শুধুমাত্র দুপুরের খাবার)</td><td>+৳৫০০</td></tr>
+        <tr><td>1963 - 2015 batch, per person</td><td>৳1,500</td></tr>
+        <tr><td>2016 - 2019 batch, per person</td><td>৳1,000</td></tr>
+        <tr><td>2020 - 2026 batch, per person</td><td>৳500</td></tr>
+        <tr><td>Current students of the school, per person</td><td>৳200</td></tr>
       </table>
       <p style="color:var(--muted); font-size:12.5px; margin-top:10px;">
-        SSC ব্যাচ অনুযায়ী রেজিস্ট্রেশন ফরমেই স্বয়ংক্রিয়ভাবে সঠিক ফি নির্ধারিত হবে।
+        The registration form automatically calculates the correct fee based on your SSC batch.
       </p>
     </div>
     <div>
       <div class="section-head" style="text-align:left; margin-bottom:18px;">
         <div class="eyebrow">Ticket Benefits</div>
-        <h2 style="font-size:26px;">টিকেট দিয়ে যা যা পাবেন</h2>
+        <h2 style="font-size:26px;">What Your Ticket Includes</h2>
       </div>
       <div class="coupon-strip">
         <div class="coupon-chip"><span class="dot">●</span>Sovereign Bag</div>
@@ -99,6 +105,25 @@
         <h3 style="font-size:17px;">Location</h3>
         <p style="margin-top:6px;">Baraibunia, Nazirpur, Pirojpur</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:#faf6ee; border-top:1px solid var(--line);">
+  <div class="wrap grid-2" style="align-items:center;">
+    <div>
+      <div class="eyebrow" style="color:var(--gold); font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:12.5px;">Give Back</div>
+      <h2 style="margin-top:10px; font-size:28px;">Special Funding</h2>
+      <p style="color:var(--muted); margin-top:14px; font-size:15px;">
+        Want to contribute beyond the registration fee? You can make a voluntary special
+        contribution — either as an individual, or on behalf of your entire SSC batch.
+      </p>
+      <a class="btn btn-gold" href="{% url 'registration:special_funding' %}" style="margin-top:18px;">Contribute Now →</a>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="ic-badge" style="margin:0 auto 16px;">🎁</div>
+      <h3>Individual or Batch Contribution</h3>
+      <p>Choose to contribute individually, or rally your batch-mates and contribute together in your batch's name.</p>
     </div>
   </div>
 </section>

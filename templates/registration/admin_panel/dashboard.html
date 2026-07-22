@@ -20,8 +20,13 @@
       <div class="stat-card"><div class="num">{{ total_registrants }}</div><div class="lab">Total Registrations</div></div>
       <div class="stat-card"><div class="num">{{ total_paid }}</div><div class="lab">Paid</div></div>
       <div class="stat-card"><div class="num">{{ total_checked_in }}</div><div class="lab">Checked-in</div></div>
-      <div class="stat-card"><div class="num">৳{{ total_revenue }}</div><div class="lab">Total Revenue</div></div>
+      <div class="stat-card"><div class="num">৳{{ total_revenue }}</div><div class="lab">Registration Revenue</div></div>
+      <div class="stat-card"><div class="num">৳{{ total_funding }}</div><div class="lab">Special Funding Received</div></div>
     </div>
+    <p style="font-size:12.5px; color:var(--muted); margin:-10px 0 20px;">
+      To view or manage individual Special Funding contributions, open
+      <a href="/django-admin/registration/specialfunding/" style="color:var(--navy); text-decoration:underline;">Django Admin → Special Funding</a>.
+    </p>
 
     <form method="get" class="search-bar">
       {{ search_form.q }}
@@ -33,7 +38,7 @@
       <table>
         <thead>
           <tr>
-            <th>Reg. ID</th><th>Name</th><th>Phone</th><th>Batch</th><th>Driver</th>
+            <th>Reg. ID</th><th>Name</th><th>Phone</th><th>Batch</th>
             <th>Status</th><th>Checked-in</th><th>Registered</th><th></th>
           </tr>
         </thead>
@@ -44,14 +49,13 @@
             <td>{{ r.full_name }}</td>
             <td>{{ r.phone }}</td>
             <td>{{ r.last_class_attended }} ({{ r.ssc_batch }})</td>
-            <td>{% if r.is_driver %}🚗{% else %}—{% endif %}</td>
             <td><span class="status-pill status-{{ r.payment_status }}">{{ r.get_payment_status_display }}</span></td>
             <td>{% if r.is_checked_in %}✅{% else %}—{% endif %}</td>
             <td>{{ r.created_at|date:"d M, h:i A" }}</td>
             <td><a href="{% url 'registration:admin_registrant_detail' r.pk %}" style="color:var(--navy); font-weight:600;">View →</a></td>
           </tr>
           {% empty %}
-          <tr><td colspan="9" style="text-align:center; color:var(--muted); padding:30px;">কোনো রেজিস্ট্রেশন পাওয়া যায়নি।</td></tr>
+          <tr><td colspan="8" style="text-align:center; color:var(--muted); padding:30px;">No registrations found.</td></tr>
           {% endfor %}
         </tbody>
       </table>

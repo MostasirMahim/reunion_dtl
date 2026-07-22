@@ -1,0 +1,96 @@
+{% extends "registration/base.html" %}
+{% block content %}
+<section class="hero" style="padding-bottom: 110px;">
+  <div class="wrap">
+    <span class="eyebrow">Support the Reunion</span>
+    <h1 style="font-size:38px;">Special Funding</h1>
+    <p class="lead">
+      Want to contribute beyond the registration fee? You can make a special contribution
+      either as an individual or on behalf of your entire SSC batch.
+    </p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="form-card">
+    <form method="post" novalidate id="fundingForm">
+      {% csrf_token %}
+
+      <div class="form-row">
+        <label>Who is contributing? *</label>
+        <div class="funding-type-group" id="fundingTypeGroup">
+          {% for radio in form.funding_type %}
+            <label class="funding-type-option" data-value="{{ radio.data.value }}">
+              {{ radio.tag }}
+              <span>{{ radio.choice_label }}</span>
+            </label>
+          {% endfor %}
+        </div>
+        {{ form.funding_type.errors }}
+      </div>
+
+      <div class="form-row" id="batchField">
+        <label for="{{ form.ssc_batch.id_for_label }}">SSC Batch *</label>
+        {{ form.ssc_batch }}
+        {{ form.ssc_batch.errors }}
+        <div class="hint">Enter the SSC batch year this contribution is made on behalf of.</div>
+      </div>
+
+      <div id="individualFields">
+        <div class="form-row">
+          <label for="{{ form.contributor_name.id_for_label }}">Full Name *</label>
+          {{ form.contributor_name }}
+          {{ form.contributor_name.errors }}
+        </div>
+        <div class="form-row">
+          <label for="{{ form.contributor_phone.id_for_label }}">Phone Number *</label>
+          {{ form.contributor_phone }}
+          {{ form.contributor_phone.errors }}
+        </div>
+      </div>
+
+      <div class="form-row">
+        <label for="{{ form.amount.id_for_label }}">Contribution Amount (Taka) *</label>
+        {{ form.amount }}
+        {{ form.amount.errors }}
+      </div>
+
+      <button type="submit" class="btn btn-gold btn-block" style="margin-top:10px;">
+        Proceed to Payment →
+      </button>
+      <p style="text-align:center; font-size:12.5px; color:var(--muted); margin-top:14px;">
+        Clicking "Proceed to Payment" will take you to the SSLCommerz payment page.
+      </p>
+    </form>
+  </div>
+</div>
+
+<script>
+(function () {
+  var radios = document.querySelectorAll('#fundingTypeGroup input[type=radio]');
+  var options = document.querySelectorAll('.funding-type-option');
+  var batchField = document.getElementById('batchField');
+  var individualFields = document.getElementById('individualFields');
+
+  function updateVisibility() {
+    var selected = document.querySelector('#fundingTypeGroup input[type=radio]:checked');
+    var value = selected ? selected.value : 'individual';
+
+    options.forEach(function (opt) {
+      opt.classList.toggle('active', opt.dataset.value === value);
+    });
+
+    if (value === 'batch') {
+      batchField.style.display = '';
+      individualFields.style.display = 'none';
+    } else {
+      batchField.style.display = 'none';
+      individualFields.style.display = '';
+    }
+  }
+
+  radios.forEach(function (r) { r.addEventListener('change', updateVisibility); });
+  updateVisibility();
+})();
+</script>
+{% endblock %}
