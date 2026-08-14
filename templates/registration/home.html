@@ -1,8 +1,9 @@
 {% extends "registration/base.html" %}
+{% load static %}
 {% block content %}
-<section class="hero">
+<section class="hero has-photo">
   <div class="wrap">
-    <span class="eyebrow">Once a Baraibunian, always a Baraibunian</span>
+    <span class="eyebrow eyebrow-bn" lang="bn">যেখানে স্বপ্নের শুরু, সেখানেই একসাথে</span>
     <h1>{{ EVENT_FULL_NAME }}</h1>
     <p class="lead">
       Coming together again after so many years — old friends, beloved teachers, and stories
@@ -23,6 +24,12 @@
       <a class="btn btn-gold" href="{% url 'registration:register' %}">Register Now →</a>
       <a class="btn btn-outline" href="#how" style="margin-left:12px;">How it works</a>
     </div>
+  </div>
+
+  <div class="hero-photo">
+    <img src="{% static 'img/school-campus.jpg' %}"
+         alt="{{ SCHOOL_NAME }} campus" loading="lazy" decoding="async">
+    <div class="hero-photo-caption">Baraibunia, Nazirpur, Pirojpur</div>
   </div>
 </section>
 

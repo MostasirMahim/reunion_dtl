@@ -74,15 +74,16 @@
           {{ form.ssc_batch }}
           {{ form.ssc_batch.errors }}
           <div class="hint">
-            If you have already passed SSC, enter your passing year. If you haven't passed yet
-            (current student), enter the year you expect to pass — the registration fee is
-            determined by this year.
+            Start typing a year (e.g. 2005) and pick it from the list. If you have already
+            passed SSC, choose your passing year. If you haven't passed yet (current student),
+            choose the year you expect to pass — the registration fee is determined by this year.
           </div>
         </div>
         <div class="form-row">
           <label for="{{ form.ssc_passing_year.id_for_label }}">SSC Passing Year (optional)</label>
           {{ form.ssc_passing_year }}
           {{ form.ssc_passing_year.errors }}
+          <div class="hint">Type to search, then select your actual passing year.</div>
         </div>
       </div>
 
@@ -117,25 +118,32 @@
 
 <script>
 (function () {
-  var sscInput = document.getElementById("{{ form.ssc_batch.id_for_label }}");
+  var sscField = document.getElementById("{{ form.ssc_batch.id_for_label }}");
   var feeAmountEl = document.getElementById("feeAmount");
   var feeAmountBtnEl = document.getElementById("feeAmountBtn");
 
   function calculateFee() {
-    var year = parseInt(sscInput.value, 10);
-    var fee = 1500;
-    if (!isNaN(year)) {
-      if (year <= 2015) { fee = 1500; }
-      else if (year <= 2019) { fee = 1000; }
-      else if (year <= 2026) { fee = 500; }
-      else { fee = 200; }
+    var year = parseInt(sscField.value, 10);
+
+    if (isNaN(year)) {
+      feeAmountEl.textContent = "৳---";
+      feeAmountBtnEl.textContent = "৳---";
+      return;
     }
+
+    var fee;
+    if (year <= 2015) { fee = 1500; }
+    else if (year <= 2019) { fee = 1000; }
+    else if (year <= 2026) { fee = 500; }
+    else { fee = 200; }
+
     feeAmountEl.textContent = "৳" + fee;
     feeAmountBtnEl.textContent = "৳" + fee;
   }
 
-  if (sscInput) {
-    sscInput.addEventListener("input", calculateFee);
+  if (sscField) {
+    sscField.addEventListener("change", calculateFee);
+    sscField.addEventListener("input", calculateFee);
     calculateFee();
   }
 })();
