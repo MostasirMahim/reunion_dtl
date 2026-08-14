@@ -243,31 +243,50 @@ tr:hover td { background: #fbf8f1; }
 .login-shell { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(160deg, var(--navy-deep), var(--navy)); }
 .login-card { background: #fff; border-radius: 16px; padding: 40px; width: 380px; box-shadow: var(--shadow-lg); }
 
-/* ---------- Hero campus photo (home) ---------- */
-.hero.has-photo { padding-bottom: 0; }
-.hero.has-photo .wrap { position: relative; z-index: 3; }
-.hero-photo {
-  position: relative;
-  margin-top: 64px;
-  height: clamp(190px, 27vw, 330px);
-  overflow: hidden;
+/* ---------- Hero campus photo (home) — full-bleed banner behind the copy ---------- */
+.hero.has-photo {
+  padding: 96px 0 104px;
+  display: flex; align-items: center;
+  min-height: min(84vh, 760px);
+  background: var(--navy-deep);
 }
+.hero.has-photo .wrap { position: relative; z-index: 3; width: 100%; }
+
+.hero-photo { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
 .hero-photo img {
+  position: absolute; inset: 0; z-index: 0;
   display: block; width: 100%; height: 100%;
-  object-fit: cover; object-position: center 70%;
-  opacity: 0.5;
-  filter: saturate(0.72) contrast(0.95) brightness(0.95);
+  object-fit: cover; object-position: 55% 60%;
+  filter: saturate(0.92) contrast(1.02);
 }
+/* Navy wash: heavy on the left where the copy sits, opening up on the right */
+.hero-photo::before {
+  content: "";
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background:
+    linear-gradient(100deg,
+      rgba(7,29,58,0.95) 0%,
+      rgba(7,29,58,0.88) 32%,
+      rgba(9,37,72,0.66) 58%,
+      rgba(11,45,87,0.42) 100%);
+}
+/* Top + bottom fade so the banner melts into the navbar and the next section */
 .hero-photo::after {
   content: "";
-  position: absolute; inset: 0; pointer-events: none;
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
   background:
-    linear-gradient(180deg, var(--navy) 0%, rgba(11,45,87,0.28) 30%, rgba(7,29,58,0.45) 74%, var(--navy-deep) 100%);
+    linear-gradient(180deg,
+      rgba(7,29,58,0.85) 0%,
+      rgba(7,29,58,0.10) 26%,
+      rgba(7,29,58,0.10) 66%,
+      rgba(7,29,58,0.80) 100%);
 }
-.hero-photo .hero-photo-caption {
-  position: absolute; left: 0; right: 0; bottom: 16px; z-index: 2;
-  text-align: center; font-size: 11.5px; letter-spacing: .16em;
-  text-transform: uppercase; color: rgba(255,255,255,0.5);
+@media (max-width: 860px) {
+  .hero.has-photo { min-height: 0; padding: 64px 0 72px; }
+  .hero-photo img { object-position: center 58%; }
+  .hero-photo::before {
+    background: linear-gradient(180deg, rgba(7,29,58,0.93) 0%, rgba(7,29,58,0.88) 60%, rgba(9,37,72,0.82) 100%);
+  }
 }
 
 /* ---------- Searchable select (combobox) ---------- */

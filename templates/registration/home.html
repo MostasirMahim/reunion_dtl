@@ -2,6 +2,9 @@
 {% load static %}
 {% block content %}
 <section class="hero has-photo">
+  <div class="hero-photo" aria-hidden="true">
+    <img src="{% static 'img/school-campus.jpg' %}" alt="{{ SCHOOL_NAME }} campus" fetchpriority="high">
+  </div>
   <div class="wrap">
     <span class="eyebrow eyebrow-bn" lang="bn">যেখানে স্বপ্নের শুরু, সেখানেই একসাথে</span>
     <h1>{{ EVENT_FULL_NAME }}</h1>
@@ -26,11 +29,6 @@
     </div>
   </div>
 
-  <div class="hero-photo">
-    <img src="{% static 'img/school-campus.jpg' %}"
-         alt="{{ SCHOOL_NAME }} campus" loading="lazy" decoding="async">
-    <div class="hero-photo-caption">Baraibunia, Nazirpur, Pirojpur</div>
-  </div>
 </section>
 
 <section class="section" id="how">

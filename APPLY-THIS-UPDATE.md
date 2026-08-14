@@ -42,10 +42,12 @@ python manage.py collectstatic --noinput
 
 পুরনো `bss-logo.jpg` ফাইলটা এখন আর কোথাও ব্যবহার হচ্ছে না — চাইলে ডিলিট করে দিতে পারেন।
 
-### ২. হোম পেজে স্কুলের ছবি
+### ২. হোম পেজে স্কুলের ছবি (ব্যানার)
 - `static/img/school-campus.jpg` যোগ করা হয়েছে
-- হোম পেজের হিরো সেকশনে **লেখাগুলোর নিচে** full-width ছবির ব্যান্ড
-- ছবিটা faded (opacity ~0.5) + উপরে-নিচে navy gradient, তাই লেখা পুরোপুরি পরিষ্কার থাকে
+- হিরো সেকশনের **পুরো ব্যাকগ্রাউন্ড** হিসেবে ছবিটা বসেছে, লেখাগুলো তার উপরে
+- বাঁদিক থেকে ডানদিকে navy gradient wash — যেখানে লেখা আছে সেদিকটা গাঢ়, ডানদিকে ক্যাম্পাস স্পষ্ট দেখা যায়
+- উপরে-নিচে আলাদা fade, তাই navbar আর পরের সেকশনের সাথে সুন্দরভাবে মিশে যায়
+- মোবাইলে wash উপর-নিচমুখী হয়ে যায়, যাতে ছোট স্ক্রিনেও লেখা পুরোপুরি পড়া যায়
 
 ### ৩. SSC Batch / SSC Passing Year — search & select
 - টেক্সট ইনপুটের বদলে এখন **১৯৬৩ থেকে ২০৩২** পর্যন্ত dropdown
@@ -82,8 +84,9 @@ templates/registration/admin_panel/login.html      (পরিবর্তিত)
 
 ## টিউন করতে চাইলে
 
-- **ছবি বেশি/কম ফ্যাকাশে:** `static/css/main.css` → `.hero-photo img` এর `opacity` (এখন `0.5`)
-- **ছবির উচ্চতা:** `.hero-photo` এর `height: clamp(190px, 27vw, 330px)`
-- **ছবির কোন অংশ দেখাবে:** `.hero-photo img` এর `object-position: center 70%`
+- **ব্যানার কতটা গাঢ়:** `static/css/main.css` → `.hero-photo::before` এর gradient-এর alpha মানগুলো
+  (`0.95 / 0.88 / 0.66 / 0.42`)। মান বাড়ালে ছবি আরও চাপা পড়বে, কমালে ছবি স্পষ্ট হবে।
+- **ব্যানারের উচ্চতা:** `.hero.has-photo` এর `min-height: min(84vh, 760px)`
+- **ছবির কোন অংশ দেখাবে:** `.hero-photo img` এর `object-position: 55% 60%`
 - **হেডারে লোগোর সাইজ:** `.brand-mark` এর `height: 52px`
 - **বছরের রেঞ্জ:** `registration/forms.py` → `SSC_YEAR_MIN` / `SSC_YEAR_MAX`
