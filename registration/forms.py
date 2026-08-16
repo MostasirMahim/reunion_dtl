@@ -14,6 +14,15 @@ YEAR_CHOICES = [("", "Select year")] + [(y, str(y)) for y in YEAR_RANGE]
 YEAR_CHOICES_OPTIONAL = [("", "Select year (optional)")] + [(y, str(y)) for y in YEAR_RANGE]
 
 
+BLOOD_GROUP_CHOICES = [
+    ("", "Select blood group (optional)"),
+    ("A+", "A+"), ("A-", "A-"),
+    ("B+", "B+"), ("B-", "B-"),
+    ("AB+", "AB+"), ("AB-", "AB-"),
+    ("O+", "O+"), ("O-", "O-"),
+]
+
+
 def _validate_year(value):
     """Guard the year range server-side (a <select> alone can be bypassed)."""
     if value in (None, ""):
@@ -77,14 +86,14 @@ class RegistrationForm(forms.ModelForm):
                 "class": "form-input", "placeholder": "e.g. Class 10 / SSC / Science-A"
             }),
             "ssc_batch": year_select(
-                YEAR_CHOICES, "Type or select a year — e.g. 2005"
+                YEAR_CHOICES, "Type a year, e.g. 2005"
             ),
             "ssc_passing_year": year_select(
-                YEAR_CHOICES_OPTIONAL, "Type or select a year (optional)"
+                YEAR_CHOICES_OPTIONAL, "Type a year (optional)"
             ),
-            "blood_group": forms.TextInput(attrs={
-                "class": "form-input", "placeholder": "e.g. B+ (optional)"
-            }),
+            "blood_group": forms.Select(
+                choices=BLOOD_GROUP_CHOICES, attrs={"class": "form-select"}
+            ),
             "present_address": forms.TextInput(attrs={
                 "class": "form-input", "placeholder": "Present address (optional)"
             }),
@@ -96,6 +105,15 @@ class RegistrationForm(forms.ModelForm):
 
     def clean_ssc_passing_year(self):
         return _validate_year(self.cleaned_data.get("ssc_passing_year"))
+
+    def clean_blood_group(self):
+        value = (self.cleaned_data.get("blood_group") or "").strip()
+        if not value:
+            return ""
+        valid = [c[0] for c in BLOOD_GROUP_CHOICES if c[0]]
+        if value not in valid:
+            raise forms.ValidationError("Please select a valid blood group.")
+        return value
 
     def clean_phone(self):
         phone = self.cleaned_data["phone"].strip()
@@ -136,7 +154,7 @@ class SpecialFundingForm(forms.ModelForm):
         widgets = {
             "funding_type": forms.RadioSelect(attrs={"class": "form-radio"}),
             "ssc_batch": year_select(
-                YEAR_CHOICES_OPTIONAL, "Type or select a year — e.g. 2005"
+                YEAR_CHOICES_OPTIONAL, "Type a year, e.g. 2005"
             ),
             "contributor_name": forms.TextInput(attrs={
                 "class": "form-input", "placeholder": "Full name"
@@ -196,4 +214,13 @@ class RegistrantSearchForm(forms.Form):
             ("failed", "Failed"), ("cancelled", "Cancelled"),
         ],
         widget=forms.Select(attrs={"class": "form-select"}),
+    )
+    ssc_batch = forms.ChoiceField(
+        required=False,
+        choices=[("", "All Batches")] + [(y, str(y)) for y in YEAR_RANGE],
+        widget=forms.Select(attrs={
+            "class": "form-select searchable-select",
+            "data-searchable": "true",
+            "data-placeholder": "All Batches",
+        }),
     )

@@ -21,6 +21,7 @@ urlpatterns = [
     path("admin-panel/login/", views.admin_login, name="admin_login"),
     path("admin-panel/logout/", views.admin_logout, name="admin_logout"),
     path("admin-panel/dashboard/", views.admin_dashboard, name="admin_dashboard"),
+    path("admin-panel/export/", views.admin_export_registrants, name="admin_export_registrants"),
     path("admin-panel/registrant/<int:pk>/", views.admin_registrant_detail, name="admin_registrant_detail"),
     path("admin-panel/registrant/<int:pk>/toggle-checkin/", views.admin_toggle_checkin, name="admin_toggle_checkin"),
 ]

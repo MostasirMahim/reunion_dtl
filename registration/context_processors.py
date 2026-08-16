@@ -8,5 +8,7 @@ def site_settings(request):
         "EVENT_FULL_NAME": settings.EVENT_FULL_NAME,
         "EVENT_DATE_TEXT": settings.EVENT_DATE_TEXT,
         "EVENT_VENUE": settings.EVENT_VENUE,
+        "EVENT_LOCATION": settings.EVENT_LOCATION,
+        "REGISTRATION_WINDOW_TEXT": settings.REGISTRATION_WINDOW_TEXT,
         "REGISTRATION_FEE": settings.REGISTRATION_FEE,
     }

@@ -155,7 +155,7 @@ def generate_ticket_pdf(registrant):
     y -= 5 * mm
     c.setFont("NotoBengali", 8.5)
     c.drawString(inner_x, y, "Location:")
-    c.drawString(inner_x + 18 * mm, y, "Baraibunia, Nazirpur, Pirojpur")
+    c.drawString(inner_x + 18 * mm, y, settings.EVENT_LOCATION)
 
     # Coupons / entitlements strip
     y -= 7 * mm
@@ -164,7 +164,7 @@ def generate_ticket_pdf(registrant):
     c.drawString(inner_x, y, "This ticket includes")
     y -= 5.5 * mm
 
-    coupons = ["Sovereign Bag", "Morning Snacks", "Lunch", "Evening Snacks"]
+    coupons = ["Souvenir", "Morning Snacks", "Lunch", "Evening Snacks"]
     chip_gap = 3 * mm
     usable_w = card_w - 16 * mm
     chip_w = (usable_w - chip_gap * (len(coupons) - 1)) / len(coupons)

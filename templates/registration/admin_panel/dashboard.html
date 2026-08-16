@@ -31,8 +31,27 @@
     <form method="get" class="search-bar">
       {{ search_form.q }}
       {{ search_form.status }}
+      {{ search_form.ssc_batch }}
       <button type="submit" class="btn btn-navy">Search</button>
+      <a class="btn btn-outline filter-reset" href="{% url 'registration:admin_dashboard' %}">Reset</a>
     </form>
+
+    <div class="results-bar">
+      <div class="results-count">
+        {% if applied_filters %}
+          <strong>{{ filtered_count }}</strong> matching registration{{ filtered_count|pluralize }}
+          <span class="filter-tags">
+            {% for f in applied_filters %}<span class="filter-tag">{{ f }}</span>{% endfor %}
+          </span>
+        {% else %}
+          Showing all <strong>{{ filtered_count }}</strong> registration{{ filtered_count|pluralize }}
+        {% endif %}
+      </div>
+      <a class="btn btn-gold export-btn"
+         href="{% url 'registration:admin_export_registrants' %}{% if querystring %}?{{ querystring }}{% endif %}">
+        ⤓ Download Excel{% if applied_filters %} (filtered){% endif %}
+      </a>
+    </div>
 
     <div class="table-card">
       <table>
@@ -61,11 +80,40 @@
       </table>
     </div>
 
-    {% if page_obj.has_other_pages %}
-    <div style="display:flex; gap:8px; justify-content:center; margin-top:20px;">
-      {% if page_obj.has_previous %}<a class="btn btn-outline" style="color:var(--navy); border-color:var(--navy); padding:8px 16px;" href="?page={{ page_obj.previous_page_number }}">← Prev</a>{% endif %}
-      <span style="align-self:center; font-size:13px; color:var(--muted);">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-      {% if page_obj.has_next %}<a class="btn btn-outline" style="color:var(--navy); border-color:var(--navy); padding:8px 16px;" href="?page={{ page_obj.next_page_number }}">Next →</a>{% endif %}
+    {% if page_obj.paginator.count %}
+    <div class="pagination-bar">
+      <div class="pagination-info">
+        Showing <strong>{{ page_obj.start_index }}</strong>–<strong>{{ page_obj.end_index }}</strong>
+        of <strong>{{ page_obj.paginator.count }}</strong>
+      </div>
+
+      {% if page_obj.has_other_pages %}
+      <nav class="pagination">
+        {% if page_obj.has_previous %}
+          <a class="pg" href="?page=1{% if querystring %}&{{ querystring }}{% endif %}">« First</a>
+          <a class="pg" href="?page={{ page_obj.previous_page_number }}{% if querystring %}&{{ querystring }}{% endif %}">‹ Prev</a>
+        {% else %}
+          <span class="pg is-disabled">« First</span>
+          <span class="pg is-disabled">‹ Prev</span>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+          {% if num == page_obj.number %}
+            <span class="pg is-current">{{ num }}</span>
+          {% elif num > page_obj.number|add:"-3" and num < page_obj.number|add:"3" %}
+            <a class="pg" href="?page={{ num }}{% if querystring %}&{{ querystring }}{% endif %}">{{ num }}</a>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <a class="pg" href="?page={{ page_obj.next_page_number }}{% if querystring %}&{{ querystring }}{% endif %}">Next ›</a>
+          <a class="pg" href="?page={{ page_obj.paginator.num_pages }}{% if querystring %}&{{ querystring }}{% endif %}">Last »</a>
+        {% else %}
+          <span class="pg is-disabled">Next ›</span>
+          <span class="pg is-disabled">Last »</span>
+        {% endif %}
+      </nav>
+      {% endif %}
     </div>
     {% endif %}
 

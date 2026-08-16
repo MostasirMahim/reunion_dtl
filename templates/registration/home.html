@@ -6,20 +6,23 @@
     <img src="{% static 'img/school-campus.jpg' %}" alt="{{ SCHOOL_NAME }} campus" fetchpriority="high">
   </div>
   <div class="wrap">
-    <span class="eyebrow eyebrow-bn" lang="bn">যেখানে স্বপ্নের শুরু, সেখানেই একসাথে</span>
+    <div class="tagline-row">
+      <span class="eyebrow eyebrow-bn" lang="bn">যেখানে স্বপ্নের শুরু, সেখানেই একসাথে</span>
+      <span class="eyebrow eyebrow-bn eyebrow-alt" lang="bn">আবার ফিরি প্রিয় বিদ্যালয়ে</span>
+    </div>
     <h1>{{ EVENT_FULL_NAME }}</h1>
     <p class="lead">
       Coming together again after so many years — old friends, beloved teachers, and stories
-      of days gone by. {{ SCHOOL_NAME }}'s biggest reunion is happening once more.
+      of days gone by. {{ SCHOOL_NAME }}'s biggest reunion is happening for the first time.
     </p>
     <div class="meta-row">
       <div class="meta-item"><span class="ic">📅</span> {{ EVENT_DATE_TEXT }}</div>
-      <div class="meta-item"><span class="ic">📍</span> Baraibunia, Nazirpur, Pirojpur</div>
+      <div class="meta-item"><span class="ic">📍</span> {{ EVENT_LOCATION }}</div>
       <div class="meta-item"><span class="ic">৳</span> Registration fee starts from ৳200</div>
     </div>
     <div class="card" style="margin-top:24px; max-width:520px; padding:16px 20px; border-color:var(--gold);">
       <p style="font-size:13.5px; color:var(--navy); font-weight:600; margin:0;">
-        📌 Registration window: <strong>August 15, 2026 – September 30, 2026</strong>.
+        📌 Registration window: <strong>{{ REGISTRATION_WINDOW_TEXT }}</strong>.
         The deadline will not be extended under any circumstances — please register early.
       </p>
     </div>
@@ -100,7 +103,7 @@
         <h2 style="font-size:26px;">What Your Ticket Includes</h2>
       </div>
       <div class="coupon-strip">
-        <div class="coupon-chip"><span class="dot">●</span>Sovereign Bag</div>
+        <div class="coupon-chip"><span class="dot">●</span>Souvenir</div>
         <div class="coupon-chip"><span class="dot">●</span>Morning Snacks</div>
         <div class="coupon-chip"><span class="dot">●</span>Lunch</div>
         <div class="coupon-chip"><span class="dot">●</span>Evening Snacks</div>
@@ -108,7 +111,7 @@
       <div class="card" style="margin-top:20px;">
         <div class="ic-badge" style="margin-bottom:12px;">📍</div>
         <h3 style="font-size:17px;">Location</h3>
-        <p style="margin-top:6px;">Baraibunia, Nazirpur, Pirojpur</p>
+        <p style="margin-top:6px;">{{ EVENT_LOCATION }}</p>
       </div>
     </div>
   </div>

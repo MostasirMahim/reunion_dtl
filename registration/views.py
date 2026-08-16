@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
@@ -270,14 +271,21 @@ def admin_logout(request):
     return redirect("registration:admin_login")
 
 
-@login_required(login_url="registration:admin_login")
-def admin_dashboard(request):
+def _filtered_registrants(request):
+    """Apply the dashboard's search / status / batch filters to the queryset.
+
+    Shared by the dashboard and the Excel export so that whatever is on screen
+    is exactly what gets downloaded.
+    """
     qs = Registrant.objects.all()
     search_form = RegistrantSearchForm(request.GET or None)
+    applied = []
 
     if search_form.is_valid():
-        q = search_form.cleaned_data.get("q")
+        q = (search_form.cleaned_data.get("q") or "").strip()
         status = search_form.cleaned_data.get("status")
+        ssc_batch = search_form.cleaned_data.get("ssc_batch")
+
         if q:
             qs = qs.filter(
                 Q(full_name__icontains=q)
@@ -286,8 +294,51 @@ def admin_dashboard(request):
                 | Q(registration_id__icontains=q)
                 | Q(transaction_id__icontains=q)
             )
+            applied.append(f'Search: "{q}"')
         if status:
             qs = qs.filter(payment_status=status)
+            applied.append(f"Status: {status.title()}")
+        if ssc_batch:
+            qs = qs.filter(ssc_batch=ssc_batch)
+            applied.append(f"SSC Batch: {ssc_batch}")
+
+    return qs, search_form, applied
+
+
+@login_required(login_url="registration:admin_login")
+def admin_export_registrants(request):
+    """Download the currently filtered registrant list as a styled .xlsx file."""
+    try:
+        from .export_utils import build_registrants_workbook
+    except ImportError:
+        messages.error(
+            request,
+            "Excel export needs the 'openpyxl' package. "
+            "Install it with: pip install openpyxl",
+        )
+        return redirect("registration:admin_dashboard")
+
+    qs, _form, applied = _filtered_registrants(request)
+    qs = qs.order_by("-created_at")
+
+    summary = " | ".join(applied) if applied else "All registrations"
+    workbook = build_registrants_workbook(qs, filter_summary=summary)
+
+    stamp = timezone.localtime(timezone.now()).strftime("%Y%m%d-%H%M")
+    slug = "filtered" if applied else "all"
+    filename = f"bss-reunion-registrations-{slug}-{stamp}.xlsx"
+
+    response = HttpResponse(
+        content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    response["Content-Disposition"] = f'attachment; filename="{filename}"'
+    workbook.save(response)
+    return response
+
+
+@login_required(login_url="registration:admin_login")
+def admin_dashboard(request):
+    qs, search_form, applied_filters = _filtered_registrants(request)
 
     total_registrants = Registrant.objects.count()
     total_paid = Registrant.objects.filter(payment_status="paid").count()
@@ -299,12 +350,21 @@ def admin_dashboard(request):
         f.amount for f in SpecialFunding.objects.filter(payment_status="paid")
     )
 
-    paginator = Paginator(qs, 20)
+    paginator = Paginator(qs.order_by("-created_at"), 20)
     page_obj = paginator.get_page(request.GET.get("page"))
+
+    # Keep the active filters in the pagination + export links.
+    params = request.GET.copy()
+    params.pop("page", None)
+    querystring = params.urlencode()
 
     return render(request, "registration/admin_panel/dashboard.html", {
         "search_form": search_form,
         "page_obj": page_obj,
+        "paginator": paginator,
+        "applied_filters": applied_filters,
+        "querystring": querystring,
+        "filtered_count": paginator.count,
         "total_registrants": total_registrants,
         "total_paid": total_paid,
         "total_checked_in": total_checked_in,
