@@ -13,7 +13,7 @@ from reportlab.lib import colors
 from reportlab.lib.pagesizes import A5
 from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas
-from reportlab.lib.utils import ImageReader
+from reportlab.lib.utils import ImageReader, simpleSplit
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
@@ -144,18 +144,23 @@ def generate_ticket_pdf(registrant):
     y -= 6 * mm
 
     # Event date & venue
-    c.setFillColor(colors.black)
-    c.setFont("NotoBengali", 8.5)
-    c.drawString(inner_x, y, "Event Date:")
-    c.drawString(inner_x + 18 * mm, y, settings.EVENT_DATE_TEXT)
-    y -= 5 * mm
-    c.setFont("NotoBengali", 8.5)
-    c.drawString(inner_x, y, "Venue:")
-    c.drawString(inner_x + 18 * mm, y, settings.EVENT_VENUE)
-    y -= 5 * mm
-    c.setFont("NotoBengali", 8.5)
-    c.drawString(inner_x, y, "Location:")
-    c.drawString(inner_x + 18 * mm, y, settings.EVENT_LOCATION)
+    usable_meta_w = (card_x + card_w - 8 * mm) - (inner_x + 19 * mm)
+
+    def draw_meta_row(label_text, value_text):
+        nonlocal y
+        c.setFillColor(colors.black)
+        c.setFont("NotoBengali", 8.5)
+        c.drawString(inner_x, y, label_text)
+        lines = simpleSplit(value_text or "", "NotoBengali", 8.5, usable_meta_w)
+        if not lines:
+            lines = ["—"]
+        for i, line_text in enumerate(lines):
+            c.drawString(inner_x + 19 * mm, y - (i * 4 * mm), line_text)
+        y -= max(4.8 * mm, len(lines) * 4 * mm + 1 * mm)
+
+    draw_meta_row("Event Date:", settings.EVENT_DATE_TEXT)
+    draw_meta_row("Venue:", settings.EVENT_VENUE)
+    draw_meta_row("Location:", settings.EVENT_LOCATION)
 
     # Coupons / entitlements strip
     y -= 7 * mm

@@ -7,3 +7,7 @@ staticfiles/
 *.log
 venv/
 .venv/
+.docs
+.sqlite3
+.zip
+bssreunion.zip

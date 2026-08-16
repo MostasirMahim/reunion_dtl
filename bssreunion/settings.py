@@ -7,6 +7,13 @@ import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load environment variables from .env file if available
+try:
+    from dotenv import load_dotenv
+    load_dotenv(BASE_DIR / ".env")
+except ImportError:
+    pass
+
 # ---------------------------------------------------------------------------
 # CORE / SECURITY
 # ---------------------------------------------------------------------------
@@ -167,7 +174,7 @@ EVENT_LOCATION = os.environ.get(
 )
 EVENT_VENUE = os.environ.get(
     "EVENT_VENUE",
-    "Baraibunia Secondary School Campus, " + EVENT_LOCATION,
+    "Baraibunia Secondary School Campus",
 )
 REGISTRATION_WINDOW_TEXT = os.environ.get("REGISTRATION_WINDOW_TEXT", "August - October 2026")
 REGISTRATION_FEE = int(os.environ.get("REGISTRATION_FEE", 500))

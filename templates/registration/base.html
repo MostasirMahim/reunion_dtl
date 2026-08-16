@@ -18,8 +18,8 @@
 </head>
 <body>
   {% block body %}
-  <header class="topbar">
-    <div class="wrap">
+  <header class="topbar" id="site-header">
+    <div class="wrap topbar-inner">
       <a class="brand" href="{% url 'registration:home' %}">
         <img class="brand-mark" src="{% static 'img/bss-logo.png' %}" alt="{{ SCHOOL_NAME }} logo">
         <div class="brand-text">
@@ -27,11 +27,20 @@
           <div class="event">{{ EVENT_SHORT_NAME }}</div>
         </div>
       </a>
-      <nav>
-        <a href="{% url 'registration:home' %}">Home</a>
-        <a href="{% url 'registration:register' %}">Register</a>
-        <a href="{% url 'registration:special_funding' %}">Special Funding</a>
-        <a href="{% url 'registration:public_status_check' %}">Check Status</a>
+
+      <!-- Mobile Navigation Toggle -->
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="primaryNav">
+        <span class="bar bar-1"></span>
+        <span class="bar bar-2"></span>
+        <span class="bar bar-3"></span>
+      </button>
+
+      <!-- Main Navigation Menu -->
+      <nav class="nav-menu" id="primaryNav">
+        <a class="nav-link" href="{% url 'registration:home' %}">Home</a>
+        <a class="nav-link" href="{% url 'registration:special_funding' %}">Special Funding</a>
+        <a class="nav-link" href="{% url 'registration:public_status_check' %}">Check Status</a>
+        <a class="nav-link nav-btn-register" href="{% url 'registration:register' %}">Register Now</a>
       </nav>
     </div>
   </header>
@@ -58,5 +67,51 @@
     </div>
   </footer>
   {% endblock %}
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var toggle = document.getElementById('navToggle');
+      var nav = document.getElementById('primaryNav');
+      var header = document.getElementById('site-header');
+      if (!toggle || !nav) return;
+
+      function closeNav() {
+        toggle.classList.remove('is-active');
+        nav.classList.remove('is-open');
+        if (header) header.classList.remove('menu-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+
+      function toggleNav(e) {
+        e.stopPropagation();
+        var isOpen = nav.classList.contains('is-open');
+        if (isOpen) {
+          closeNav();
+        } else {
+          toggle.classList.add('is-active');
+          nav.classList.add('is-open');
+          if (header) header.classList.add('menu-open');
+          toggle.setAttribute('aria-expanded', 'true');
+        }
+      }
+
+      toggle.addEventListener('click', toggleNav);
+
+      nav.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', closeNav);
+      });
+
+      document.addEventListener('click', function(e) {
+        if (nav.classList.contains('is-open') && !header.contains(e.target)) {
+          closeNav();
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && nav.classList.contains('is-open')) {
+          closeNav();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
