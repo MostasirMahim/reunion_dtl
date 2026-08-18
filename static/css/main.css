@@ -609,3 +609,9 @@ tr:hover td { background: #fbf8f1; }
 .combo-option.is-selected::after { content: "\2713"; float: right; color: var(--gold); }
 .combo-empty { padding: 10px 12px; font-size: 13.5px; color: var(--muted); }
 
+@media (max-width: 860px) {
+  .grid-3, .grid-2, .stat-grid { grid-template-columns: 1fr; }
+  .form-grid-2 { grid-template-columns: 1fr; }
+  .form-card { margin-top: -40px; padding: 24px; }
+}
+
